@@ -16,7 +16,7 @@ public class DrawPile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //!Creating a List of CardData with all the sprites and their values
+        // Creating a List of CardData with all the sprites and their values
         cardData = new List<CardData>();
 
         //? creating an array of all the sprites in our sprite sheet
@@ -34,9 +34,24 @@ public class DrawPile : MonoBehaviour
             cardData.Add(card);
         }
 
-        //! Instanciate Cards using the CardData List
+        // Shuffle the cardData list
+        System.Random random = new System.Random();
+        for (int i = 0; i < cardData.Count; i++)
+        {
+            int randomIndex = random.Next(0, cardData.Count);
+            CardData temp = cardData[i];
+            cardData[i] = cardData[randomIndex];
+            cardData[randomIndex] = temp;
+        }
 
-        // todo
+        // Instantiate cards using the shuffled cardData list
+        foreach (CardData cardData in cardData)
+        {
+            GameObject card = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
+            card.GetComponent<Card>().frontSprite = cardData.frontSprite;
+            card.GetComponent<Card>().value = cardData.value;
+        }
+
 
 
     }
