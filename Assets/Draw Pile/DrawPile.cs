@@ -44,15 +44,19 @@ public class DrawPile : MonoBehaviour
             cardData[randomIndex] = temp;
         }
 
-        // Instantiate cards using the shuffled cardData list
-        foreach (CardData cardData in cardData)
+        // Instanciate Cards using the CardData List
+        float z = 0;
+        for (int i = 0; i < cardData.Count; i++)
         {
             GameObject card = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
-            card.GetComponent<Card>().frontSprite = cardData.frontSprite;
-            card.GetComponent<Card>().value = cardData.value;
+            card.GetComponent<Card>().frontSprite = cardData[i].frontSprite;
+            card.GetComponent<Card>().value = cardData[i].value;
+
+            //? give the card a random position within a certain range and a random z rotation
+            card.transform.localPosition = new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), z);
+            z -= 0.01f;
+            card.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
         }
-
-
 
     }
 
