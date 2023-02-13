@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SA
+      name: S1
       rect:
         serializedVersion: 2
         x: 32
@@ -138,7 +138,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DA
+      name: D1
       rect:
         serializedVersion: 2
         x: 64
@@ -159,7 +159,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CA
+      name: C1
       rect:
         serializedVersion: 2
         x: 96
@@ -180,7 +180,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HA
+      name: H1
       rect:
         serializedVersion: 2
         x: 128
@@ -453,7 +453,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SK
+      name: S13
       rect:
         serializedVersion: 2
         x: 544
@@ -474,7 +474,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DK
+      name: D13
       rect:
         serializedVersion: 2
         x: 576
@@ -495,7 +495,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CK
+      name: C13
       rect:
         serializedVersion: 2
         x: 608
@@ -516,7 +516,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HK
+      name: H13
       rect:
         serializedVersion: 2
         x: 640
@@ -789,7 +789,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SJ
+      name: S11
       rect:
         serializedVersion: 2
         x: 416
@@ -810,7 +810,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DJ
+      name: D11
       rect:
         serializedVersion: 2
         x: 448
@@ -831,7 +831,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CJ
+      name: C11
       rect:
         serializedVersion: 2
         x: 479
@@ -852,7 +852,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HJ
+      name: H11
       rect:
         serializedVersion: 2
         x: 512
@@ -868,48 +868,6 @@ TextureImporter:
       bones: []
       spriteID: 59bfddf5e7b1941e89e00b49a239fe70
       internalID: -15604779
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Joker_Black
-      rect:
-        serializedVersion: 2
-        x: 544
-        y: 240
-        width: 32
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 578d0950865fd42bd8ba161bf262d70c
-      internalID: -579565945
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Joker_Red
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 240
-        width: 32
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9aa21fdce53c74e80b58a1480e2d731e
-      internalID: -1680708717
       vertices: []
       indices: 
       edges: []
@@ -1167,7 +1125,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SQ
+      name: S12
       rect:
         serializedVersion: 2
         x: 416
@@ -1188,7 +1146,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DQ
+      name: D12
       rect:
         serializedVersion: 2
         x: 448
@@ -1209,7 +1167,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CQ
+      name: C12
       rect:
         serializedVersion: 2
         x: 480
@@ -1230,7 +1188,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HQ
+      name: H12
       rect:
         serializedVersion: 2
         x: 512
@@ -1250,27 +1208,6 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Card_Sprites_0
-      rect:
-        serializedVersion: 2
-        x: 13
-        y: 361
-        width: 77
-        height: 1
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c759af723eab1424a88403f35035f3c7
-      internalID: -2050034608
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1284,57 +1221,57 @@ TextureImporter:
     nameFileIdTable:
       D5: 1345201005
       D6: -1016639288
-      CA: -118585214
+      D13: -770097886
       H10: 845386157
       S5: 1789859756
       C6: -237131495
       H2: 1727810042
-      SJ: -2136424031
       D9: -2026632136
-      SA: -1543437994
+      S11: -2136424031
       D8: -1664401564
       H6: -1337307567
-      SQ: -1132108810
+      H11: -15604779
       C7: 1904186315
       H4: 723438508
       D7: -1480863021
       S10: -1344754391
       S2: 513380289
       S8: 114550296
-      HK: 1984498172
       Joker_Black: -579565945
       S9: 199243638
       Joker_Red: -1680708717
-      SK: -91686457
-      DK: -770097886
-      Card_Sprites_0: -2050034608
-      C9: 1440095440
-      S3: 734310689
+      C11: 2044614723
+      D11: -141801019
+      H13: 1984498172
+      C1: -118585214
       C2: 1552494565
-      DA: -1712154562
-      S4: -1495740792
-      DJ: -141801019
       C8: 2032643402
+      S4: -1495740792
+      S3: 734310689
+      D2: 1515885771
+      H1: -1337192658
       C5: 1595704469
+      C9: 1440095440
+      S13: -91686457
       D4: -1482255301
       H8: -568011558
-      DQ: 1256862559
       H9: 1548657789
-      CK: -1630600032
-      D2: 1515885771
-      HA: -1337192658
+      Card_Sprites_0: -2050034608
+      C13: -1630600032
       H3: 833120340
+      S1: -1543437994
       C4: 579085784
       S6: -2065306066
       H5: -489101430
+      S12: -1132108810
       D3: 424777998
+      C12: 159517553
       C3: -15258760
-      HQ: 395903646
-      CQ: 159517553
-      CJ: 2044614723
       D10: -890904564
       S7: -1834044759
-      HJ: -15604779
+      D12: 1256862559
+      H12: 395903646
+      D1: -1712154562
       C10: -1995970839
       H7: 799355420
   spritePackingTag: 
