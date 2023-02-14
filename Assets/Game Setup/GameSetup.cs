@@ -8,12 +8,16 @@ public class GameSetup : MonoBehaviour
 
     public GameObject drawPilePrefab;
     public GameObject playerComponentPrefab;
+
+    public List<GameObject> PlayerComponents;
     // Start is called before the first frame update
+
     void Start()
     {
-
+        PlayerComponents = new List<GameObject>();
         InstantiatePlayers(numberOfPlayers);
         InstantiateDrawPile();
+        Debug.Log("List " + PlayerComponents.Count);
     }
 
     // Update is called once per frame
@@ -31,6 +35,7 @@ public class GameSetup : MonoBehaviour
     {
         GameObject playerComponent = Instantiate(playerComponentPrefab, position, Quaternion.identity);
         playerComponent.GetComponent<PlayerDetails>().playerNumber = playerNumber;
+        PlayerComponents.Add(playerComponent);
     }
 
     void InstantiatePlayers(int numberOfPlayers)

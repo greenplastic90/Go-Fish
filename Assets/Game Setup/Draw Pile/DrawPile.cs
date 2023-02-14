@@ -11,13 +11,27 @@ public class DrawPile : MonoBehaviour
 {
     public GameObject cardPrefab;
     public List<CardData> cardData;
+    public List<GameObject> drawPile;
     public float timeBetweenCards;
 
     // Start is called before the first frame update
     void Start()
     {
+
+        CreateSuffledDrawPile();
+        Debug.Log("drawpile " + drawPile.Count);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    void CreateSuffledDrawPile()
+    {
         //! Creating a List of CardData with all the sprites and their values
         cardData = new List<CardData>();
+        drawPile = new List<GameObject>();
 
         //? creating an array of all the sprites in our sprite sheet
         Sprite[] sprites = Resources.LoadAll<Sprite>("Card_Sprites");
@@ -41,12 +55,6 @@ public class DrawPile : MonoBehaviour
         StartCoroutine(InstantiateCards());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     IEnumerator InstantiateCards()
     {
         float z = 0;
@@ -60,6 +68,9 @@ public class DrawPile : MonoBehaviour
             newCard.transform.localPosition = new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), z);
             z -= 0.01f;
             newCard.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+
+
+
 
             //! Add a delay before instantiating the next card
             yield return new WaitForSeconds(timeBetweenCards);
@@ -75,6 +86,11 @@ public class DrawPile : MonoBehaviour
             list[i] = list[randomIndex];
             list[randomIndex] = temp;
         }
+    }
+
+    void DealCards()
+    {
+
     }
 }
 
