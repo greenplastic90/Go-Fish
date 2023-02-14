@@ -5,19 +5,26 @@ using UnityEngine;
 public class GameSetup : MonoBehaviour
 {
     public int numberOfPlayers = 3;
+
+    public GameObject drawPilePrefab;
     public GameObject playerComponentPrefab;
     // Start is called before the first frame update
     void Start()
     {
 
         InstantiatePlayers(numberOfPlayers);
-
+        InstantiateDrawPile();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void InstantiateDrawPile()
+    {
+        Instantiate(drawPilePrefab, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
     void InstantiatePlayer(int playerNumber, Vector3 position)
