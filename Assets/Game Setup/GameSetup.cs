@@ -17,6 +17,7 @@ public class GameSetup : MonoBehaviour
     public List<GameObject> drawPile;
     private int numberOfCardsEachPlayerDraws;
     public float timeBetweenCards;
+
     //! Number of players has to be between no less than 2 and no greater than 5
     public int numberOfPlayers;
 
@@ -32,15 +33,18 @@ public class GameSetup : MonoBehaviour
         cardData = new List<CardData>();
         drawPile = new List<GameObject>();
 
-        numberOfCardsEachPlayerDraws = numberOfPlayers < 3 ? 5 : 7;
+        numberOfCardsEachPlayerDraws = numberOfPlayers < 3 ? 7 : 5;
 
         InstantiatePlayers(numberOfPlayers);
         CreateSuffledDrawPile();
 
-
     }
 
 
+
+
+
+    //! Instanciating players
     void InstantiatePlayers(int numberOfPlayers)
     {
         // Instantiate the player components based on the number of players
@@ -83,11 +87,49 @@ public class GameSetup : MonoBehaviour
     }
 
 
+
+
+
+
+
+    //! Darw pile 
     void DealCards()
     {
-        Debug.Log("DealCards");
+        if (drawPile.Count < numberOfCardsEachPlayerDraws * playerComponents.Count)
+        {
+            Debug.LogError("Not enough cards in the draw pile to deal.");
+            return;
+        }
 
+        StartCoroutine(DealCardsCoroutine());
     }
+
+    IEnumerator DealCardsCoroutine()
+    {
+        for (int i = 0; i < numberOfCardsEachPlayerDraws; i++)
+        {
+            foreach (GameObject player in playerComponents)
+            {
+                if (drawPile.Count > 0)
+                {
+                    int lastIndex = drawPile.Count - 1;
+                    GameObject card = drawPile[lastIndex];
+                    Transform hand = player.transform.Find("Hand");
+                    card.transform.SetParent(hand);
+                    card.transform.localPosition = Vector3.zero;
+                    card.GetComponent<Card>().ToggleFaceUp(false);
+                    hand.GetComponent<Hand>().AddCard(card.GetComponent<Card>());
+                    drawPile.RemoveAt(lastIndex);
+                    yield return new WaitForSeconds(timeBetweenCards);
+                }
+            }
+        }
+    }
+
+
+
+
+
     void CreateSuffledDrawPile()
     {
         //! Creating a List of CardData with all the sprites and their values

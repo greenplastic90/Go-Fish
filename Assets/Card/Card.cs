@@ -21,5 +21,11 @@ public class Card : MonoBehaviour
     {
 
     }
+
+    public void ToggleFaceUp(bool boolean)
+    {
+        isFaceUp = boolean;
+    }
+
 }
 
