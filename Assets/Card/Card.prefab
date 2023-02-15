@@ -101,4 +101,4 @@ MonoBehaviour:
   frontSprite: {fileID: 1552494565, guid: 5c00f702c3e6047b99fb5498f243feac, type: 3}
   value: 0
   cardSpriteRenderer: {fileID: 2127781181163616454}
-  isFaceUp: 1
+  isFaceUp: 0
