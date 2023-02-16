@@ -20,5 +20,6 @@ public class Hand : MonoBehaviour
     public void AddCard(Card card)
     {
         cardsInHand.Add(card);
+
     }
 }

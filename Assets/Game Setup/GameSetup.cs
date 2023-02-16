@@ -115,16 +115,31 @@ public class GameSetup : MonoBehaviour
                     int lastIndex = drawPile.Count - 1;
                     GameObject card = drawPile[lastIndex];
                     Transform hand = player.transform.Find("Hand");
+                    Vector3 startPos = card.transform.position;
+                    Vector3 endPos = hand.position;
+                    Quaternion startRot = card.transform.rotation;
+                    Quaternion endRot = Quaternion.Euler(0, 0, 0);
+
                     card.transform.SetParent(hand);
-                    card.transform.localPosition = Vector3.zero;
                     card.GetComponent<Card>().ToggleFaceUp(false);
                     hand.GetComponent<Hand>().AddCard(card.GetComponent<Card>());
+
+                    float t = 0;
+                    while (t < 1)
+                    {
+                        t += Time.deltaTime * 2;
+                        card.transform.position = Vector3.Lerp(startPos, endPos, t);
+                        card.transform.rotation = Quaternion.Lerp(startRot, endRot, t);
+                        yield return null;
+                    }
+
                     drawPile.RemoveAt(lastIndex);
                     yield return new WaitForSeconds(timeBetweenCards);
                 }
             }
         }
     }
+
 
 
 
