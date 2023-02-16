@@ -113,6 +113,7 @@ public class GameSetup : MonoBehaviour
                 if (drawPile.Count > 0)
                 {
                     int lastIndex = drawPile.Count - 1;
+                    int playerNumber = player.GetComponent<PlayerDetails>().playerNumber;
                     GameObject card = drawPile[lastIndex];
                     Transform hand = player.transform.Find("Hand");
                     Vector3 startPos = card.transform.position;
@@ -121,7 +122,7 @@ public class GameSetup : MonoBehaviour
                     Quaternion endRot = Quaternion.Euler(0, 0, 0);
 
                     card.transform.SetParent(hand);
-                    card.GetComponent<Card>().ToggleFaceUp(false);
+                    if (playerNumber == 1) { card.GetComponent<Card>().ToggleFaceUp(true); }
                     hand.GetComponent<Hand>().AddCard(card);
 
                     float t = 0;
