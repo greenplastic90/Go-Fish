@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    public List<Card> cardsInHand;
+    public List<GameObject> cardsInHand;
     // Start is called before the first frame update
     void Start()
     {
-        cardsInHand = new List<Card>();
+        cardsInHand = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -17,7 +17,7 @@ public class Hand : MonoBehaviour
 
     }
 
-    public void AddCard(Card card)
+    public void AddCard(GameObject card)
     {
         cardsInHand.Add(card);
 

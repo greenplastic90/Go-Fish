@@ -122,7 +122,7 @@ public class GameSetup : MonoBehaviour
 
                     card.transform.SetParent(hand);
                     card.GetComponent<Card>().ToggleFaceUp(false);
-                    hand.GetComponent<Hand>().AddCard(card.GetComponent<Card>());
+                    hand.GetComponent<Hand>().AddCard(card);
 
                     float t = 0;
                     while (t < 1)
