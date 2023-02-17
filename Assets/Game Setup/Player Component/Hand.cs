@@ -45,9 +45,12 @@ public class Hand : MonoBehaviour
 
     private void AdjustCardPositions()
     {
+        if (playerDetails.playerNumber == 1)
+        {
+            // Sort the cards by value
+            cardsInHand.Sort(new CardValueComparer());
+        }
 
-        // Sort the cards by value
-        cardsInHand.Sort(new CardValueComparer());
 
 
         // Store all desired positions in a list
