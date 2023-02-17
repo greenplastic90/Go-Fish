@@ -21,11 +21,11 @@ public class Hand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (cardsInHand.Count != lastCardCount)
-        // {
-        //     lastCardCount = cardsInHand.Count;
-        //     AdjustCardPositions();
-        // }
+        if (cardsInHand.Count != lastCardCount)
+        {
+            lastCardCount = cardsInHand.Count;
+            AdjustCardPositions();
+        }
 
         // cardsInHand.ForEach(card => Debug.Log(card.name + "  " + card.transform.position));
 
@@ -34,7 +34,7 @@ public class Hand : MonoBehaviour
     public void AddCard(GameObject card)
     {
         cardsInHand.Add(card);
-        AdjustCardPositions();
+
     }
 
     private void AdjustCardPositions()
