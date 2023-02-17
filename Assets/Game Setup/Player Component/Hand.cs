@@ -9,40 +9,47 @@ public class Hand : MonoBehaviour
     private int lastCardCount;
 
     private float cardsOffset = 0.5f;
+    private bool cardsOffsetUpdated = false;
 
-    private PlayerDetails playerDetails;
-
+    public PlayerDetails playerDetails;
 
     // Start is called before the first frame update
     void Start()
     {
         cardsInHand = new List<GameObject>();
         lastCardCount = cardsInHand.Count;
-        playerDetails = GetComponentInParent<PlayerDetails>();
-
-        cardsOffset = playerDetails.playerNumber == 1 ? 1f : 0.5f;
     }
 
-
-    // Update is called once per frame
     void Update()
     {
+        // Updates cardOffset once playerDetails has been assigned
+        if (playerDetails != null && !cardsOffsetUpdated)
+        {
+            cardsOffset = playerDetails.playerNumber == 1 ? 1f : 0.5f;
+            cardsOffsetUpdated = true;
+        }
+
+        // Runs once there is a change in the number of cards in Hand
         if (cardsInHand.Count != lastCardCount)
         {
             lastCardCount = cardsInHand.Count;
             AdjustCardPositions();
         }
-
     }
+
 
     public void AddCard(GameObject card)
     {
         cardsInHand.Add(card);
-
     }
 
     private void AdjustCardPositions()
     {
+
+        // Sort the cards by value
+        cardsInHand.Sort(new CardValueComparer());
+
+
         // Store all desired positions in a list
         List<Vector3> desiredPositions = new List<Vector3>();
         for (int i = 0; i < cardsInHand.Count; i++)
@@ -51,12 +58,14 @@ public class Hand : MonoBehaviour
             desiredPositions.Add(newPosition);
         }
 
+
         // Start coroutine for each card
         for (int i = 0; i < cardsInHand.Count; i++)
         {
             StartCoroutine(MoveToDesiredPosition(cardsInHand[i], desiredPositions[i]));
         }
     }
+
 
     private Vector3 generateCardPosition(int i, int numberOfCards)
     {
@@ -66,8 +75,6 @@ public class Hand : MonoBehaviour
         float zPos = i + 1;
         return new Vector3(xPos, yPos, zPos);
     }
-
-
 
     public IEnumerator MoveToDesiredPosition(GameObject card, Vector3 desiredPosition)
     {
@@ -96,4 +103,14 @@ public class Hand : MonoBehaviour
         card.transform.position = desiredPosition;
     }
 
+    // Custom comparer to compare the value of cards
+    private class CardValueComparer : IComparer<GameObject>
+    {
+        public int Compare(GameObject a, GameObject b)
+        {
+            int valueA = a.GetComponent<Card>().value;
+            int valueB = b.GetComponent<Card>().value;
+            return valueB.CompareTo(valueA);
+        }
+    }
 }
