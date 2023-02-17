@@ -34,31 +34,30 @@ public class Hand : MonoBehaviour
     public void AddCard(GameObject card)
     {
         cardsInHand.Add(card);
+        AdjustCardPositions();
     }
 
     private void AdjustCardPositions()
     {
 
-        // int playerNumber = transform.parent.GetComponent<PlayerDetails>().playerNumber;
+        int playerNumber = transform.parent.GetComponent<PlayerDetails>().playerNumber;
 
-        // for (int i = 0; i < cardsInHand.Count; i++)
-        // {
-        //     if (playerNumber == 1)
-        //     {
-        //         Debug.Log("Card postion" + cardsInHand[i].transform.position);
-        //     }
-        //     Vector3 newPosition = generateCardPosition(i, cardsInHand.Count);
-        //     cardsInHand[i].transform.position = newPosition;
-
-
-        // }
+        for (int i = 0; i < cardsInHand.Count; i++)
+        {
+            Vector3 newPosition = generateCardPosition(i, cardsInHand.Count);
+            cardsInHand[i].transform.position = newPosition;
+        }
 
 
     }
     private Vector3 generateCardPosition(int i, int numberOfCards)
     {
-        return new Vector3((i - (numberOfCards - 1) / 2f) * cardsOffset, 0, i + 1);
+        float yPos = transform.position.y;
+        float xPos = (i - (numberOfCards - 1) / 2f) * cardsOffset;
+        float zPos = i + 1;
+        return new Vector3(xPos, yPos, zPos);
     }
+
 
 
     // public IEnumerator MoveToDesiredPostion(Vector3 desiredPosition)

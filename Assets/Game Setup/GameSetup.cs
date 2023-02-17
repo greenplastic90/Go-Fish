@@ -89,10 +89,6 @@ public class GameSetup : MonoBehaviour
 
 
 
-
-
-
-
     //! Darw pile 
     void DealCards()
     {
@@ -144,11 +140,6 @@ public class GameSetup : MonoBehaviour
             }
         }
     }
-
-
-
-
-
 
     void CreateSuffledDrawPile()
     {
