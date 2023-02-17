@@ -10,7 +10,7 @@ public class Hand : MonoBehaviour
 
     private float cardsOffset = 0.5f;
 
-    public PlayerDetails playerDetails;
+    private PlayerDetails playerDetails;
 
 
     // Start is called before the first frame update
@@ -18,9 +18,11 @@ public class Hand : MonoBehaviour
     {
         cardsInHand = new List<GameObject>();
         lastCardCount = cardsInHand.Count;
+        playerDetails = GetComponentInParent<PlayerDetails>();
 
         cardsOffset = playerDetails.playerNumber == 1 ? 1f : 0.5f;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -30,8 +32,6 @@ public class Hand : MonoBehaviour
             lastCardCount = cardsInHand.Count;
             AdjustCardPositions();
         }
-
-        // cardsInHand.ForEach(card => Debug.Log(card.name + "  " + card.transform.position));
 
     }
 
