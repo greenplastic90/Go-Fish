@@ -34,6 +34,7 @@ public class GameSetup : MonoBehaviour
         drawPile = new List<GameObject>();
 
         numberOfCardsEachPlayerDraws = numberOfPlayers < 3 ? 7 : 5;
+        // numberOfCardsEachPlayerDraws = 1;
 
         InstantiatePlayers(numberOfPlayers);
         CreateSuffledDrawPile();
@@ -51,26 +52,26 @@ public class GameSetup : MonoBehaviour
         switch (numberOfPlayers)
         {
             case 2:
-                InstantiatePlayer(1, new Vector3(0, 0, 0)); // Bottom center
-                InstantiatePlayer(2, new Vector3(0, 8, 0));  // Top center
+                InstantiatePlayer(1, new Vector3(0, -4, 0)); // Bottom center
+                InstantiatePlayer(2, new Vector3(0, 4, 0));  // Top center
                 break;
             case 3:
-                InstantiatePlayer(1, new Vector3(0, 0, 0));           // Bottom center
-                InstantiatePlayer(2, new Vector3(-4, 8, 0));          // Top left
-                InstantiatePlayer(3, new Vector3(4, 8, 0));           // Top right
+                InstantiatePlayer(1, new Vector3(0, -4, 0));           // Bottom center
+                InstantiatePlayer(2, new Vector3(-4, 4, 0));          // Top left
+                InstantiatePlayer(3, new Vector3(4, 4, 0));           // Top right
                 break;
             case 4:
-                InstantiatePlayer(1, new Vector3(0, 0, 0));           // Bottom center
-                InstantiatePlayer(2, new Vector3(0, 8, 0));           // Top center
-                InstantiatePlayer(3, new Vector3(-7, 4, 0));          // Left center
-                InstantiatePlayer(4, new Vector3(7, 4, 0));           // Right center
+                InstantiatePlayer(1, new Vector3(0, -4, 0));           // Bottom center
+                InstantiatePlayer(2, new Vector3(0, 4, 0));           // Top center
+                InstantiatePlayer(3, new Vector3(-7, 0, 0));          // Left center
+                InstantiatePlayer(4, new Vector3(7, 0, 0));           // Right center
                 break;
             case 5:
-                InstantiatePlayer(1, new Vector3(0, 0, 0));           // Bottom center
-                InstantiatePlayer(2, new Vector3(-4, 8, 0));          // Top left
-                InstantiatePlayer(3, new Vector3(4, 8, 0));           // Top right
-                InstantiatePlayer(4, new Vector3(-7, 4, 0));          // Left center
-                InstantiatePlayer(5, new Vector3(7, 4, 0));           // Right center
+                InstantiatePlayer(1, new Vector3(0, -4, 0));           // Bottom center
+                InstantiatePlayer(2, new Vector3(-4, 4, 0));          // Top left
+                InstantiatePlayer(3, new Vector3(4, 4, 0));           // Top right
+                InstantiatePlayer(4, new Vector3(-7, 0, 0));          // Left center
+                InstantiatePlayer(5, new Vector3(7, 0, 0));           // Right center
                 break;
             default:
                 Debug.LogError("Unsupported number of players: " + numberOfPlayers);
@@ -119,21 +120,24 @@ public class GameSetup : MonoBehaviour
                     Vector3 startPos = card.transform.position;
                     Vector3 endPos = hand.position;
                     Quaternion startRot = card.transform.rotation;
-                    Quaternion endRot = Quaternion.Euler(0, 0, 0);
+                    Quaternion endRot = Quaternion.Euler(hand.position);
 
-                    card.transform.SetParent(hand);
-                    if (playerNumber == 1) { card.GetComponent<Card>().ToggleFaceUp(true); }
-                    hand.GetComponent<Hand>().AddCard(card);
 
                     float t = 0;
                     while (t < 1)
                     {
-                        t += Time.deltaTime * 2;
+                        t += Time.deltaTime * 3;
                         card.transform.position = Vector3.Lerp(startPos, endPos, t);
                         card.transform.rotation = Quaternion.Lerp(startRot, endRot, t);
                         yield return null;
+
+
                     }
 
+                    //? Only flip card for player 1
+                    if (playerNumber == 1) { card.GetComponent<Card>().ToggleFaceUp(true); }
+                    card.transform.SetParent(hand, true);
+                    hand.GetComponent<Hand>().AddCard(card);
                     drawPile.RemoveAt(lastIndex);
                     yield return new WaitForSeconds(timeBetweenCards);
                 }
