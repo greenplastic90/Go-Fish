@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour
     private void AdjustCardPositions()
     {
 
-        int playerNumber = transform.parent.GetComponent<PlayerDetails>().playerNumber;
+
 
         for (int i = 0; i < cardsInHand.Count; i++)
         {
@@ -52,8 +52,9 @@ public class Hand : MonoBehaviour
     }
     private Vector3 generateCardPosition(int i, int numberOfCards)
     {
+
         float yPos = transform.position.y;
-        float xPos = (i - (numberOfCards - 1) / 2f) * cardsOffset;
+        float xPos = (i - (numberOfCards - 1) / 2f) * cardsOffset + transform.position.x;
         float zPos = i + 1;
         return new Vector3(xPos, yPos, zPos);
     }
