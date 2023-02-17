@@ -170,7 +170,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 2127781181163616449, guid: 6a931d29e3d2b4176899b333ed41c367, type: 3}
   drawPile: []
   timeBetweenCards: 0.01
-  numberOfPlayers: 2
+  numberOfPlayers: 5
   drawPilePrefab: {fileID: 19484213594966620, guid: 5657673ceaace471ea06aade74643a1f, type: 3}
   playerComponentPrefab: {fileID: 8517988980065891036, guid: 3a9a6b6f26fa24851850ee888ea406df, type: 3}
   playerComponents: []

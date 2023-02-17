@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsInHand: []
-  returnSpeed: 1
+  playerDetails: {fileID: 0}
 --- !u!1 &3220790254520757582
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsInHand: []
-  returnSpeed: 1
+  playerDetails: {fileID: 4160096364348376751}
 --- !u!1 &8517988980065891036
 GameObject:
   m_ObjectHideFlags: 0

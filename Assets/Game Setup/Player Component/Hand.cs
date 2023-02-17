@@ -10,12 +10,16 @@ public class Hand : MonoBehaviour
 
     private float cardsOffset = 0.5f;
 
+    public PlayerDetails playerDetails;
+
 
     // Start is called before the first frame update
     void Start()
     {
         cardsInHand = new List<GameObject>();
         lastCardCount = cardsInHand.Count;
+
+        cardsOffset = playerDetails.playerNumber == 1 ? 1f : 0.5f;
     }
 
     // Update is called once per frame
