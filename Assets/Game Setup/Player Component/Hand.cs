@@ -137,7 +137,9 @@ public class Hand : MonoBehaviour
         //! cardValue had to be something alraedy in this cardValuesInHand
 
         // find the hand of the player you want to access using opposingPlayerNumber
-        Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponent<Hand>();
+        Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponentInChildren<Hand>();
+
+        Debug.Log(opposingPlayerHand);
 
         // check that the players cardValuesInHand List has cardVlue
 
