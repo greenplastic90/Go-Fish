@@ -131,16 +131,26 @@ public class Hand : MonoBehaviour
     [ContextMenu("Ask For Card")]
     void AskForCardFromAnotherPlayer()
     {
-        //  opposingPlayerNumber = 2;
-        //  cardValue = 2;
         // todo
         //! cardValue had to be something alraedy in this cardValuesInHand
 
         // find the hand of the player you want to access using opposingPlayerNumber
         Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponentInChildren<Hand>();
-
-
         // check that the players cardValuesInHand List has cardVlue
+        List<int> opposingPlayersCardValuesInHand = opposingPlayerHand.cardValuesInHand;
+        if (opposingPlayersCardValuesInHand.Contains(cardValue))
+        {
+            Debug.Log("TRUE");
+        }
+        else
+        {
+            Debug.Log("FALSE");
+        }
+
+
+
+
+
 
         //? if it does, find find all the cards with said value in cardsInHand,
         // remove from players cardsInHand and Add to this Hand Lists cardsInHand
@@ -152,7 +162,9 @@ public class Hand : MonoBehaviour
 
 
     }
-    [ContextMenu("Update Card Values In Hand")]
+
+
+
     void UpdateCardValuesInHand()
     {
         cardValuesInHand.Clear();
