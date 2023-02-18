@@ -35,7 +35,7 @@ public class Hand : MonoBehaviour
         if (cardsInHand.Count != lastCardCount)
         {
             lastCardCount = cardsInHand.Count;
-            //! update cardsValuesInHand
+            UpdateCardValuesInHand();
             //! check for 4 of a kind
             AdjustCardPositions();
         }
@@ -139,7 +139,6 @@ public class Hand : MonoBehaviour
         // find the hand of the player you want to access using opposingPlayerNumber
         Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponentInChildren<Hand>();
 
-        Debug.Log(opposingPlayerHand);
 
         // check that the players cardValuesInHand List has cardVlue
 
@@ -153,4 +152,20 @@ public class Hand : MonoBehaviour
 
 
     }
+    [ContextMenu("Update Card Values In Hand")]
+    void UpdateCardValuesInHand()
+    {
+        cardValuesInHand.Clear();
+
+        cardsInHand.ForEach(cardInHand =>
+        {
+            int cardValue = cardInHand.GetComponent<Card>().value;
+            if (!cardValuesInHand.Contains(cardValue))
+            {
+                // Add the card value only if it does not already exist in the list
+                cardValuesInHand.Add(cardValue);
+            }
+        });
+    }
+
 }
