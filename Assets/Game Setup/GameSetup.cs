@@ -63,15 +63,15 @@ public class GameSetup : MonoBehaviour
                 break;
             case 4:
                 InstantiatePlayer(1, new Vector3(0, -4, 0));           // Bottom center
-                InstantiatePlayer(2, new Vector3(0, 4, 0));           // Top center
-                InstantiatePlayer(3, new Vector3(-7, 0, 0));          // Left center
+                InstantiatePlayer(2, new Vector3(-7, 0, 0));          // Left center
+                InstantiatePlayer(3, new Vector3(0, 4, 0));           // Top center
                 InstantiatePlayer(4, new Vector3(7, 0, 0));           // Right center
                 break;
             case 5:
                 InstantiatePlayer(1, new Vector3(0, -4, 0));           // Bottom center
-                InstantiatePlayer(2, new Vector3(-4, 4, 0));          // Top left
-                InstantiatePlayer(3, new Vector3(4, 4, 0));           // Top right
-                InstantiatePlayer(4, new Vector3(-7, 0, 0));          // Left center
+                InstantiatePlayer(2, new Vector3(-7, 0, 0));          // Left center
+                InstantiatePlayer(3, new Vector3(-4, 4, 0));          // Top left
+                InstantiatePlayer(4, new Vector3(4, 4, 0));           // Top right
                 InstantiatePlayer(5, new Vector3(7, 0, 0));           // Right center
                 break;
             default:
@@ -179,7 +179,7 @@ public class GameSetup : MonoBehaviour
         {
             //! Instanciate the card
             GameObject newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-            newCard.transform.SetParent(drawPileObject.transform);
+            newCard.transform.SetParent(drawPileObject.transform, true);
             newCard.name = "Card " + card.frontSprite.name; // uniqe object name in Unity
             newCard.GetComponent<Card>().frontSprite = card.frontSprite;
             newCard.GetComponent<Card>().value = card.value;
