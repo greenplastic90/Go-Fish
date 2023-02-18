@@ -63,7 +63,8 @@ public class Hand : MonoBehaviour
         // Start coroutine for each card
         for (int i = 0; i < cardsInHand.Count; i++)
         {
-            StartCoroutine(MoveToDesiredPosition(cardsInHand[i], desiredPositions[i]));
+            Vector3 startingPosition = cardsInHand[i].transform.position; // Starting position of the card
+            StartCoroutine(MoveToDesiredPosition(cardsInHand[i], startingPosition, desiredPositions[i]));
         }
     }
 
@@ -77,12 +78,12 @@ public class Hand : MonoBehaviour
         return new Vector3(xPos, yPos, zPos);
     }
 
-    public IEnumerator MoveToDesiredPosition(GameObject card, Vector3 desiredPosition)
+    public IEnumerator MoveToDesiredPosition(GameObject card, Vector3 startingPosition, Vector3 desiredPosition)
     {
         float duration = 0.5f; // Duration of the movement
         float time = 0f; // Time elapsed since the start of the movement
 
-        Vector3 startingPosition = card.transform.position; // Starting position of the card
+
 
         // Loop until the movement is complete
         while (time < duration)
@@ -160,7 +161,7 @@ public class Hand : MonoBehaviour
             });
 
             // move the cards smoothly to the new hand
-            matchingCards.ForEach(card => StartCoroutine(MoveToDesiredPosition(card, transform.position)));
+            // matchingCards.ForEach(card => StartCoroutine(MoveToDesiredPosition(card, transform.position)));
 
             // this player can ask for another card
         }
