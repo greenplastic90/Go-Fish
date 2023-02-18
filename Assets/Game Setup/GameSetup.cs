@@ -11,12 +11,13 @@ public class CardData
 
 public class GameSetup : MonoBehaviour
 {
+    public GameObject drawPileObject;
     private List<CardData> cardData;
     public GameObject cardPrefab;
 
     public List<GameObject> drawPile;
     private int numberOfCardsEachPlayerDraws;
-    public float timeBetweenCards;
+    public float timeBetweenInstanciatingCards;
 
     //! Number of players has to be between no less than 2 and no greater than 5
     public int numberOfPlayers;
@@ -135,7 +136,7 @@ public class GameSetup : MonoBehaviour
                     card.transform.SetParent(hand, true);
                     hand.GetComponent<Hand>().AddCard(card);
                     drawPile.RemoveAt(lastIndex);
-                    yield return new WaitForSeconds(timeBetweenCards);
+                    yield return new WaitForSeconds(timeBetweenInstanciatingCards);
                 }
             }
         }
@@ -172,11 +173,13 @@ public class GameSetup : MonoBehaviour
 
     IEnumerator InstantiateCards()
     {
+
         float z = 0;
         foreach (CardData card in cardData)
         {
             //! Instanciate the card
             GameObject newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+            newCard.transform.SetParent(drawPileObject.transform);
             newCard.name = "Card " + card.frontSprite.name; // uniqe object name in Unity
             newCard.GetComponent<Card>().frontSprite = card.frontSprite;
             newCard.GetComponent<Card>().value = card.value;
@@ -190,7 +193,7 @@ public class GameSetup : MonoBehaviour
 
 
             //! Add a delay before instantiating the next card
-            yield return new WaitForSeconds(timeBetweenCards);
+            yield return new WaitForSeconds(timeBetweenInstanciatingCards);
         }
 
         DealCards();
