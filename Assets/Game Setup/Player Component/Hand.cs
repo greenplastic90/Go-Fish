@@ -5,6 +5,8 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     public List<GameObject> cardsInHand;
+    // This list only has single values of whats avilable in cardsInHand
+    public List<int> cardValuesInHand;
 
     private int lastCardCount;
 
@@ -33,6 +35,8 @@ public class Hand : MonoBehaviour
         if (cardsInHand.Count != lastCardCount)
         {
             lastCardCount = cardsInHand.Count;
+            //! update cardsValuesInHand
+            //! check for 4 of a kind
             AdjustCardPositions();
         }
     }
@@ -115,5 +119,23 @@ public class Hand : MonoBehaviour
             int valueB = b.GetComponent<Card>().value;
             return valueB.CompareTo(valueA);
         }
+    }
+
+    void AskForCardFromAnotherPlayer(int playerNumber, int cardValue)
+    {
+        // todo
+        // cardValue had to be something alraedy in this cardValuesInHand
+        // find the hand of the player you want to access using playerNumber
+        // check that the players cardValuesInHand List has cardVlue
+
+        //? if it does, find find all the cards with said value in cardsInHand,
+        // remove from players cardsInHand and Add to this Hand Lists cardsInHand
+        // Change the parent Hand of said cards
+        // move the cards smoothly to the new Hand
+        // this player can ask for another card
+
+        //? if it doesn't, trun moves to next player
+
+
     }
 }
