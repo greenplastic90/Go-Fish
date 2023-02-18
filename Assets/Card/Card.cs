@@ -13,7 +13,7 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cardSpriteRenderer.sprite = isFaceUp ? frontSprite : backSprite;
+        UpdateSprite();
     }
 
     // Update is called once per frame
@@ -25,6 +25,12 @@ public class Card : MonoBehaviour
     public void ToggleIsFaceUp(bool boolean)
     {
         isFaceUp = boolean;
+        UpdateSprite();
+
+    }
+
+    void UpdateSprite()
+    {
         cardSpriteRenderer.sprite = isFaceUp ? frontSprite : backSprite;
     }
 
