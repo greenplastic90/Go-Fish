@@ -19,12 +19,13 @@ public class Card : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        cardSpriteRenderer.sprite = isFaceUp ? frontSprite : backSprite;
+
     }
 
-    public void ToggleFaceUp(bool boolean)
+    public void ToggleIsFaceUp(bool boolean)
     {
         isFaceUp = boolean;
+        cardSpriteRenderer.sprite = isFaceUp ? frontSprite : backSprite;
     }
 
 }

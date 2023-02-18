@@ -106,7 +106,7 @@ public class DrawPile : MonoBehaviour
     }
     void DealCards()
     {
-        Debug.Log("Player Count => " + playerComponents.Count);
+
 
         if (drawPile.Count < numberOfCardsToDealAtGameStart * playerComponents.Count)
         {
@@ -146,7 +146,7 @@ public class DrawPile : MonoBehaviour
                     }
 
                     //? Only flip card for player 1
-                    if (playerNumber == 1) { card.GetComponent<Card>().ToggleFaceUp(true); }
+                    if (playerNumber == 1) { card.GetComponent<Card>().ToggleIsFaceUp(true); }
                     card.transform.SetParent(hand, true);
                     hand.GetComponent<Hand>().AddCard(card);
                     drawPile.RemoveAt(lastIndex);

@@ -13,7 +13,7 @@ public class Hand : MonoBehaviour
     private float cardsOffset = 0.5f;
     private bool cardsOffsetUpdated = false;
 
-    public PlayerDetails playerDetails;
+    public PlayerDetails thisPlayerDetails;
 
     // Start is called before the first frame update
     void Start()
@@ -24,10 +24,10 @@ public class Hand : MonoBehaviour
 
     void Update()
     {
-        // Updates cardOffset once playerDetails has been assigned
-        if (playerDetails != null && !cardsOffsetUpdated)
+        // Updates cardOffset once thisPlayerDetails has been assigned
+        if (thisPlayerDetails != null && !cardsOffsetUpdated)
         {
-            cardsOffset = playerDetails.playerNumber == 1 ? 1f : 0.5f;
+            cardsOffset = thisPlayerDetails.playerNumber == 1 ? 1f : 0.5f;
             cardsOffsetUpdated = true;
         }
 
@@ -49,7 +49,7 @@ public class Hand : MonoBehaviour
 
     private void AdjustCardPositions()
     {
-        if (playerDetails.playerNumber == 1)
+        if (thisPlayerDetails.playerNumber == 1)
         {
             // Sort the cards by value
             cardsInHand.Sort(new CardValueComparer());
@@ -121,11 +121,24 @@ public class Hand : MonoBehaviour
         }
     }
 
-    void AskForCardFromAnotherPlayer(int playerNumber, int cardValue)
+
+    [SerializeField]
+    private int opposingPlayerNumber = 2;
+
+    [SerializeField]
+    private int cardValue = 2;
+
+    [ContextMenu("Ask For Card")]
+    void AskForCardFromAnotherPlayer()
     {
+        //  opposingPlayerNumber = 2;
+        //  cardValue = 2;
         // todo
-        // cardValue had to be something alraedy in this cardValuesInHand
-        // find the hand of the player you want to access using playerNumber
+        //! cardValue had to be something alraedy in this cardValuesInHand
+
+        // find the hand of the player you want to access using opposingPlayerNumber
+        Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponent<Hand>();
+
         // check that the players cardValuesInHand List has cardVlue
 
         //? if it does, find find all the cards with said value in cardsInHand,
