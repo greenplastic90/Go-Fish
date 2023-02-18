@@ -148,7 +148,7 @@ public class DrawPile : MonoBehaviour
                     //? Only flip card for player 1
                     if (playerNumber == 1) { card.GetComponent<Card>().ToggleIsFaceUp(true); }
                     card.transform.SetParent(hand, true);
-                    hand.GetComponent<Hand>().AddCard(card);
+                    hand.GetComponent<Hand>().cardsInHand.Add(card);
                     drawPile.RemoveAt(lastIndex);
                     yield return new WaitForSeconds(timeBetweenInstanciatingCards);
                 }

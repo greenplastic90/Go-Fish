@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Hand : MonoBehaviour
 {
@@ -39,10 +40,6 @@ public class Hand : MonoBehaviour
     }
 
 
-    public void AddCard(GameObject card)
-    {
-        cardsInHand.Add(card);
-    }
 
     private void AdjustCardPositions()
     {
@@ -131,31 +128,55 @@ public class Hand : MonoBehaviour
         // todo
         //! cardValue had to be something alraedy in this cardValuesInHand
 
-        // find the hand of the player you want to access using opposingPlayerNumber
+        // Find the hand of the player you want to access using opposingPlayerNumber
         Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponentInChildren<Hand>();
 
         List<GameObject> opposingPlayerCardsInHand = opposingPlayerHand.cardsInHand;
+        // Check if cardValue is in any of the opposingPlayerCardsInHand
+        bool valueFound = opposingPlayerCardsInHand.Any(cardInHand => cardInHand.GetComponent<Card>().value == cardValue);
 
-
+        if (valueFound)
         {
+            // find all the cards with the specified value in cardsInHand
+            List<GameObject> matchingCards = opposingPlayerCardsInHand.FindAll(card => card.GetComponent<Card>().value == cardValue);
 
+            // remove matching cards from opposingPlayerCardsInHand and add them to this hand's cardsInHand
+            opposingPlayerCardsInHand.RemoveAll(card => matchingCards.Contains(card));
+            cardsInHand.AddRange(matchingCards);
 
-            opposingPlayerCardsInHand.ForEach(cardInHand =>
+            // set the parent of the matching cards to this hand
+            matchingCards.ForEach(card =>
             {
-                //? if it does, find find all the cards with said value in cardsInHand,
-                if (cardInHand.GetComponent<Card>().value == cardValue)
+                card.transform.SetParent(transform);
+                if (thisPlayerDetails.playerNumber == 1)
                 {
-
+                    card.GetComponent<Card>().ToggleIsFaceUp(true);
                 }
-                // remove from players cardsInHand and Add to this Hand Lists cardsInHand
+                else
+                {
+                    card.GetComponent<Card>().ToggleIsFaceUp(false);
+                }
 
-                // Change the parent Hand of said cards
-                // move the cards smoothly to the new Hand
             });
+
+            // move the cards smoothly to the new hand
+            matchingCards.ForEach(card => StartCoroutine(MoveToDesiredPosition(card, transform.position)));
 
             // this player can ask for another card
         }
+
+        else
+        {
+            Debug.Log("Value not found");
+            //todo turn moves to next player
+
+        }
+
+
+
+
     }
+
 
 
 }
