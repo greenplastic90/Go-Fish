@@ -5,9 +5,6 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     public List<GameObject> cardsInHand;
-    // This list only has single values of whats avilable in cardsInHand
-    public List<int> cardValuesInHand;
-
     private int lastCardCount;
 
     private float cardsOffset = 0.5f;
@@ -35,7 +32,7 @@ public class Hand : MonoBehaviour
         if (cardsInHand.Count != lastCardCount)
         {
             lastCardCount = cardsInHand.Count;
-            UpdateCardValuesInHand();
+
             //! check for 4 of a kind
             AdjustCardPositions();
         }
@@ -136,48 +133,29 @@ public class Hand : MonoBehaviour
 
         // find the hand of the player you want to access using opposingPlayerNumber
         Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponentInChildren<Hand>();
-        // check that the players cardValuesInHand List has cardVlue
-        List<int> opposingPlayersCardValuesInHand = opposingPlayerHand.cardValuesInHand;
-        if (opposingPlayersCardValuesInHand.Contains(cardValue))
+
+        List<GameObject> opposingPlayerCardsInHand = opposingPlayerHand.cardsInHand;
+
+
         {
-            Debug.Log("TRUE");
-        }
-        else
-        {
-            Debug.Log("FALSE");
-        }
 
 
-
-
-
-
-        //? if it does, find find all the cards with said value in cardsInHand,
-        // remove from players cardsInHand and Add to this Hand Lists cardsInHand
-        // Change the parent Hand of said cards
-        // move the cards smoothly to the new Hand
-        // this player can ask for another card
-
-        //? if it doesn't, trun moves to next player
-
-
-    }
-
-
-
-    void UpdateCardValuesInHand()
-    {
-        cardValuesInHand.Clear();
-
-        cardsInHand.ForEach(cardInHand =>
-        {
-            int cardValue = cardInHand.GetComponent<Card>().value;
-            if (!cardValuesInHand.Contains(cardValue))
+            opposingPlayerCardsInHand.ForEach(cardInHand =>
             {
-                // Add the card value only if it does not already exist in the list
-                cardValuesInHand.Add(cardValue);
-            }
-        });
+                //? if it does, find find all the cards with said value in cardsInHand,
+                if (cardInHand.GetComponent<Card>().value == cardValue)
+                {
+
+                }
+                // remove from players cardsInHand and Add to this Hand Lists cardsInHand
+
+                // Change the parent Hand of said cards
+                // move the cards smoothly to the new Hand
+            });
+
+            // this player can ask for another card
+        }
     }
+
 
 }
