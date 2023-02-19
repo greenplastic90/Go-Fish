@@ -29,19 +29,12 @@ public class Hand : MonoBehaviour
             cardsOffsetUpdated = true;
         }
 
-        // Runs once there is a change in the number of cards in Hand
-        if (cardsInHand.Count != lastCardCount)
-        {
-            lastCardCount = cardsInHand.Count;
 
-            //! check for 4 of a kind
-            AdjustCardPositions();
-        }
     }
 
 
 
-    private void AdjustCardPositions()
+    public void AdjustCardPositions(float speed)
     {
         if (thisPlayerDetails.playerNumber == 1)
         {
@@ -64,7 +57,7 @@ public class Hand : MonoBehaviour
         for (int i = 0; i < cardsInHand.Count; i++)
         {
             Vector3 startingPosition = cardsInHand[i].transform.position; // Starting position of the card
-            StartCoroutine(MoveToDesiredPosition(cardsInHand[i], startingPosition, desiredPositions[i]));
+            StartCoroutine(MoveToDesiredPosition(cardsInHand[i], startingPosition, desiredPositions[i], speed));
         }
     }
 
@@ -78,9 +71,9 @@ public class Hand : MonoBehaviour
         return new Vector3(xPos, yPos, zPos);
     }
 
-    public IEnumerator MoveToDesiredPosition(GameObject card, Vector3 startingPosition, Vector3 desiredPosition)
+    public IEnumerator MoveToDesiredPosition(GameObject card, Vector3 startingPosition, Vector3 desiredPosition, float duration)
     {
-        float duration = 0.5f; // Duration of the movement
+
         float time = 0f; // Time elapsed since the start of the movement
 
 
@@ -103,6 +96,7 @@ public class Hand : MonoBehaviour
 
         // Set the position of the card to the desired position (in case of rounding errors)
         card.transform.position = desiredPosition;
+
     }
 
     // Custom comparer to compare the value of cards
@@ -126,26 +120,25 @@ public class Hand : MonoBehaviour
     [ContextMenu("Ask For Card")]
     void AskForCardFromAnotherPlayer()
     {
-        // todo
-        //! cardValue had to be something alraedy in this cardValuesInHand
-
         // Find the hand of the player you want to access using opposingPlayerNumber
         Hand opposingPlayerHand = GameObject.Find("Player " + opposingPlayerNumber).GetComponentInChildren<Hand>();
 
-        List<GameObject> opposingPlayerCardsInHand = opposingPlayerHand.cardsInHand;
-        // Check if cardValue is in any of the opposingPlayerCardsInHand
-        bool valueFound = opposingPlayerCardsInHand.Any(cardInHand => cardInHand.GetComponent<Card>().value == cardValue);
+        // Find all the cards in the opposing player's hand that match the specified value
+        List<GameObject> matchingCards = opposingPlayerHand.cardsInHand
+            .Where(card => card.GetComponent<Card>().value == cardValue)
+            .ToList();
 
-        if (valueFound)
+        if (matchingCards.Count > 0)
         {
-            // find all the cards with the specified value in cardsInHand
-            List<GameObject> matchingCards = opposingPlayerCardsInHand.FindAll(card => card.GetComponent<Card>().value == cardValue);
-
-            // remove matching cards from opposingPlayerCardsInHand and add them to this hand's cardsInHand
-            opposingPlayerCardsInHand.RemoveAll(card => matchingCards.Contains(card));
+            // Remove the matching cards from the opposing player's hand and add them to this hand's cardsInHand
+            opposingPlayerHand.cardsInHand.RemoveAll(card => matchingCards.Contains(card));
             cardsInHand.AddRange(matchingCards);
 
-            // set the parent of the matching cards to this hand
+            // Update the positions of the cards in hands
+            AdjustCardPositions(0.75f);
+            opposingPlayerHand.AdjustCardPositions(0.75f);
+
+            // Set the parent of the matching cards to this hand
             matchingCards.ForEach(card =>
             {
                 card.transform.SetParent(transform);
@@ -157,27 +150,58 @@ public class Hand : MonoBehaviour
                 {
                     card.GetComponent<Card>().ToggleIsFaceUp(false);
                 }
-
             });
 
-            // move the cards smoothly to the new hand
-            // matchingCards.ForEach(card => StartCoroutine(MoveToDesiredPosition(card, transform.position)));
-
-            // this player can ask for another card
-        }
-
-        else
-        {
-            Debug.Log("Value not found");
-            //todo turn moves to next player
 
         }
-
-
-
-
     }
 
+
+    void CheckForFourOfAKinds()
+    {
+        //todo loop over cardsInHand
+
+        //todo get all values
+
+        //todo IF there are 4 of the same value
+        //todo move cards and shrink their size as they go to Books Won GameObject
+        //todo we remove all Cards from cardsInHand with said value
+        //todo increment books won by 1
+
+        //todo ELSE contiune to next action
+
+    }
+    [ContextMenu("Check For 4 Of A Kind")]
+    public void CheckForFourOfAKind()
+    {
+        Dictionary<int, int> valueCounts = new Dictionary<int, int>();
+
+        foreach (GameObject card in cardsInHand)
+        {
+            int value = card.GetComponent<Card>().value;
+
+            if (valueCounts.ContainsKey(value))
+            {
+                valueCounts[value]++;
+            }
+            else
+            {
+                valueCounts.Add(value, 1);
+            }
+        }
+
+        foreach (int value in valueCounts.Keys)
+        {
+            Debug.Log("Value => " + value);
+            if (valueCounts[value] >= 4)
+            {
+                Debug.Log("Four of a Kind Found ==> " + value);
+            }
+        }
+
+        Debug.Log("No Four Of A Kinds Found");
+
+    }
 
 
 }

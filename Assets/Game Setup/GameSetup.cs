@@ -17,6 +17,8 @@ public class GameSetup : MonoBehaviour
     public GameObject playerComponentPrefab;
     public List<GameObject> playerComponents;
 
+    public Vector3 drawPileInitialPosition = new Vector3(-8, -4, 0);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,7 +76,7 @@ public class GameSetup : MonoBehaviour
 
     void InstanciateDrawPile()
     {
-        GameObject drawPile = Instantiate(drawPilePrefab, Vector3.zero, Quaternion.identity);
+        GameObject drawPile = Instantiate(drawPilePrefab, drawPileInitialPosition, Quaternion.identity);
         drawPile.name = "Draw Pile";
 
     }

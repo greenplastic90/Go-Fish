@@ -133,12 +133,12 @@ public class DrawPile : MonoBehaviour
                     Quaternion startRot = card.transform.rotation;
                     Quaternion endRot = Quaternion.Euler(hand.position);
 
-
+                    float s = 2;
                     float t = 0;
                     while (t < 1)
                     {
-                        t += Time.deltaTime * 3;
-                        card.transform.position = Vector3.Lerp(startPos, endPos, t);
+                        t += Time.deltaTime * 2;
+                        card.transform.position = Vector3.Lerp(startPos, endPos, t * s);
                         card.transform.rotation = Quaternion.Lerp(startRot, endRot, t);
                         yield return null;
 
@@ -149,8 +149,11 @@ public class DrawPile : MonoBehaviour
                     if (playerNumber == 1) { card.GetComponent<Card>().ToggleIsFaceUp(true); }
                     card.transform.SetParent(hand, true);
                     hand.GetComponent<Hand>().cardsInHand.Add(card);
+
                     drawPile.RemoveAt(lastIndex);
+
                     yield return new WaitForSeconds(timeBetweenInstanciatingCards);
+                    hand.GetComponent<Hand>().AdjustCardPositions(0.1f);
                 }
             }
         }
