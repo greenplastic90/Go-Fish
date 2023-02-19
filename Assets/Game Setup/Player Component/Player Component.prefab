@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsInHand: []
+  cardsOffset: 0.5
   thisPlayerDetails: {fileID: 0}
   PlayerComponent: {fileID: 0}
   booksWonGameObject: {fileID: 0}
@@ -173,13 +174,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592b5d9a221c847999ddcdd139ccb27d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsInHand: []
+  cardsInHand:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  cardsOffset: 0.5
   thisPlayerDetails: {fileID: 4160096364348376751}
   PlayerComponent: {fileID: 8517988980065891036}
   booksWonGameObject: {fileID: 3220790254520757582}
   bookPrefab: {fileID: 1462971157440960948, guid: 4c0d2e89a5e4b4b2888b92f846838143, type: 3}
   opposingPlayerNumber: 2
-  cardValue: 2
+  cardValue: 5
 --- !u!1 &8517988980065891036
 GameObject:
   m_ObjectHideFlags: 0

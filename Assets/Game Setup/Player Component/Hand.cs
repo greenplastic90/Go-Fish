@@ -5,13 +5,13 @@ using System.Linq;
 
 public class Hand : MonoBehaviour
 {
+    private GameLogic gameLogic;
     public List<GameObject> cardsInHand;
     private int lastCardCount;
-
     public float cardsOffset = 0.5f;
-    private bool cardsOffsetUpdated = false;
-
+    private bool playerDetailsUpdated = false;
     public PlayerDetails thisPlayerDetails;
+    private int playerNumber;
     public GameObject PlayerComponent;
     public GameObject booksWonGameObject;
     public GameObject bookPrefab;
@@ -20,6 +20,7 @@ public class Hand : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
         cardsInHand = new List<GameObject>();
         lastCardCount = cardsInHand.Count;
     }
@@ -27,90 +28,20 @@ public class Hand : MonoBehaviour
     void Update()
     {
         // Updates cardOffset once thisPlayerDetails has been assigned
-        if (thisPlayerDetails != null && !cardsOffsetUpdated)
+        if (thisPlayerDetails != null && !playerDetailsUpdated)
         {
-            cardsOffset = thisPlayerDetails.playerNumber == 1 ? 1f : 0.5f;
-            cardsOffsetUpdated = true;
+            playerNumber = thisPlayerDetails.playerNumber;
+            cardsOffset = playerNumber == 1 ? 1f : 0.5f;
+
+            playerDetailsUpdated = true;
         }
 
 
     }
 
-
-
-    public void AdjustGameObjectsPositions(List<GameObject> objectsList, GameObject parentGameObject, float cardsOffset, float speed)
-    {
-        if (thisPlayerDetails.playerNumber == 1)
-        {
-            // Sort the cards by value
-            objectsList.Sort(new CardValueComparer());
-        }
-
-
-
-        // Store all desired positions in a list
-        List<Vector3> desiredPositions = new List<Vector3>();
-        for (int i = 0; i < objectsList.Count; i++)
-        {
-            Vector3 newPosition = generateCardPosition(parentGameObject, i, objectsList.Count, cardsOffset);
-            desiredPositions.Add(newPosition);
-        }
-
-
-        // Start coroutine for each card
-        for (int i = 0; i < objectsList.Count; i++)
-        {
-            Vector3 startingPosition = objectsList[i].transform.position; // Starting position of the card
-            StartCoroutine(MoveToDesiredPosition(objectsList[i], startingPosition, desiredPositions[i], speed));
-        }
-    }
-
-
-    private Vector3 generateCardPosition(GameObject parentGameObject, int i, int numberOfCards, float cardsOffset)
-    {
-
-        float yPos = parentGameObject.transform.position.y;
-        float xPos = (i - (numberOfCards - 1) / 2f) * cardsOffset + parentGameObject.transform.position.x;
-        float zPos = i + 1;
-        return new Vector3(xPos, yPos, zPos);
-    }
-
-    public IEnumerator MoveToDesiredPosition(GameObject card, Vector3 startingPosition, Vector3 desiredPosition, float duration)
-    {
-
-        float time = 0f; // Time elapsed since the start of the movement
-
-        // Loop until the movement is complete
-        while (time < duration)
-        {
-            // Calculate the new position of the card based on the time elapsed and the desired position
-            Vector3 newPosition = Vector3.Lerp(startingPosition, desiredPosition, time / duration);
-
-            // Set the position of the card to the new position
-            card.transform.position = newPosition;
-
-            // Increment the time elapsed
-            time += Time.deltaTime;
-
-            // Wait until the next frame
-            yield return null;
-        }
-
-        // Set the position of the card to the desired position (in case of rounding errors)
-        card.transform.position = desiredPosition;
-
-    }
 
     // Custom comparer to compare the value of cards
-    private class CardValueComparer : IComparer<GameObject>
-    {
-        public int Compare(GameObject a, GameObject b)
-        {
-            int valueA = a.GetComponent<Card>().value;
-            int valueB = b.GetComponent<Card>().value;
-            return valueB.CompareTo(valueA);
-        }
-    }
+
 
 
     [SerializeField]
@@ -139,8 +70,8 @@ public class Hand : MonoBehaviour
             cardsInHand.AddRange(matchingCards);
 
             // Update the positions of the cards in hands
-            AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
-            opposingPlayerHand.AdjustGameObjectsPositions(oppositngPlayersCardsInHand, opposingPlayerComponent, cardsOffset, 0.75f);
+            gameLogic.AdjustGameObjectsPositions(playerNumber, cardsInHand, PlayerComponent, cardsOffset, 0.75f);
+            opposingPlayerHand.gameLogic.AdjustGameObjectsPositions(playerNumber, oppositngPlayersCardsInHand, opposingPlayerComponent, cardsOffset, 0.75f);
 
             // Set the parent of the matching cards to this hand
             matchingCards.ForEach(card =>
@@ -215,6 +146,7 @@ public class Hand : MonoBehaviour
         // Instanciate a new Book 
         GameObject newBook = Instantiate(bookPrefab, booksWonPosition, Quaternion.identity);
         newBook.name = "Book" + value;
+        float cardsOffsetInbook = newBook.GetComponent<Book>().cardsOffset;
 
         // Make it child of Books Won
         newBook.transform.SetParent(booksWonGameObject.transform);
@@ -225,9 +157,9 @@ public class Hand : MonoBehaviour
         {
             int index = cardsToMove.IndexOf(card);
             Vector3 position = booksWonPosition + new Vector3(index * xOffset, 0, -index);
-            StartCoroutine(MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
+            StartCoroutine(gameLogic.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
-            AdjustGameObjectsPositions(cardsToMove, newBook, 0.2f, 0.75f);
+            gameLogic.AdjustGameObjectsPositions(playerNumber, cardsToMove, newBook, cardsOffsetInbook, 0.75f);
             card.transform.SetParent(newBook.transform, false);
             cardsInHand.Remove(card);
         }
@@ -258,7 +190,7 @@ public class Hand : MonoBehaviour
             yield return null;
         }
         card.transform.localScale = desiredScale;
-        AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
+        gameLogic.AdjustGameObjectsPositions(playerNumber, cardsInHand, PlayerComponent, cardsOffset, 0.75f);
     }
 
 

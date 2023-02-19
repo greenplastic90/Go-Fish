@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DrawPile : MonoBehaviour
 {
+    private GameLogic gameLogic;
     //? Public
     public float timeBetweenInstanciatingCards;
     public List<GameObject> drawPile;
@@ -20,7 +21,7 @@ public class DrawPile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        gameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
         gameSetup = GameObject.Find("Game Setup").GetComponent<GameSetup>();
         cardData = new List<CardData>();
         drawPile = new List<GameObject>();
@@ -157,7 +158,7 @@ public class DrawPile : MonoBehaviour
                     drawPile.RemoveAt(lastIndex);
 
                     yield return new WaitForSeconds(timeBetweenInstanciatingCards);
-                    hand.GetComponent<Hand>().AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
+                    gameLogic.AdjustGameObjectsPositions(playerNumber, cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
                 }
             }
 

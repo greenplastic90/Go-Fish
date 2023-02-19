@@ -5,6 +5,7 @@ using UnityEngine;
 public class Book : MonoBehaviour
 {
     public List<GameObject> book;
+    public float cardsOffset = 0.01f;
     // Start is called before the first frame update
     void Start()
     {
