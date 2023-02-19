@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInHand: []
   thisPlayerDetails: {fileID: 0}
+  PlayerComponent: {fileID: 0}
   booksWonGameObject: {fileID: 0}
   bookPrefab: {fileID: 0}
   opposingPlayerNumber: 2
@@ -174,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInHand: []
   thisPlayerDetails: {fileID: 4160096364348376751}
+  PlayerComponent: {fileID: 8517988980065891036}
   booksWonGameObject: {fileID: 3220790254520757582}
   bookPrefab: {fileID: 1462971157440960948, guid: 4c0d2e89a5e4b4b2888b92f846838143, type: 3}
   opposingPlayerNumber: 2
