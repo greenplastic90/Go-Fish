@@ -8,7 +8,7 @@ public class Hand : MonoBehaviour
     public List<GameObject> cardsInHand;
     private int lastCardCount;
 
-    private float cardsOffset = 0.5f;
+    public float cardsOffset = 0.5f;
     private bool cardsOffsetUpdated = false;
 
     public PlayerDetails thisPlayerDetails;
@@ -38,7 +38,7 @@ public class Hand : MonoBehaviour
 
 
 
-    public void AdjustGameObjectsPositions(List<GameObject> objectsList, GameObject parentGameObject, float speed)
+    public void AdjustGameObjectsPositions(List<GameObject> objectsList, GameObject parentGameObject, float cardsOffset, float speed)
     {
         if (thisPlayerDetails.playerNumber == 1)
         {
@@ -52,7 +52,7 @@ public class Hand : MonoBehaviour
         List<Vector3> desiredPositions = new List<Vector3>();
         for (int i = 0; i < objectsList.Count; i++)
         {
-            Vector3 newPosition = generateCardPosition(parentGameObject, i, objectsList.Count);
+            Vector3 newPosition = generateCardPosition(parentGameObject, i, objectsList.Count, cardsOffset);
             desiredPositions.Add(newPosition);
         }
 
@@ -66,7 +66,7 @@ public class Hand : MonoBehaviour
     }
 
 
-    private Vector3 generateCardPosition(GameObject parentGameObject, int i, int numberOfCards)
+    private Vector3 generateCardPosition(GameObject parentGameObject, int i, int numberOfCards, float cardsOffset)
     {
 
         float yPos = parentGameObject.transform.position.y;
@@ -79,8 +79,6 @@ public class Hand : MonoBehaviour
     {
 
         float time = 0f; // Time elapsed since the start of the movement
-
-
 
         // Loop until the movement is complete
         while (time < duration)
@@ -141,8 +139,8 @@ public class Hand : MonoBehaviour
             cardsInHand.AddRange(matchingCards);
 
             // Update the positions of the cards in hands
-            AdjustGameObjectsPositions(cardsInHand, PlayerComponent, 0.75f);
-            opposingPlayerHand.AdjustGameObjectsPositions(oppositngPlayersCardsInHand, opposingPlayerComponent, 0.75f);
+            AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
+            opposingPlayerHand.AdjustGameObjectsPositions(oppositngPlayersCardsInHand, opposingPlayerComponent, cardsOffset, 0.75f);
 
             // Set the parent of the matching cards to this hand
             matchingCards.ForEach(card =>
@@ -229,7 +227,7 @@ public class Hand : MonoBehaviour
             Vector3 position = booksWonPosition + new Vector3(index * xOffset, 0, -index);
             StartCoroutine(MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
-            AdjustGameObjectsPositions(cardsToMove, newBook, 0.75f);
+            AdjustGameObjectsPositions(cardsToMove, newBook, 0.2f, 0.75f);
             card.transform.SetParent(newBook.transform, false);
             cardsInHand.Remove(card);
         }
@@ -260,7 +258,7 @@ public class Hand : MonoBehaviour
             yield return null;
         }
         card.transform.localScale = desiredScale;
-        AdjustGameObjectsPositions(cardsInHand, PlayerComponent, 0.75f);
+        AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
     }
 
 

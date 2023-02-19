@@ -132,6 +132,8 @@ public class DrawPile : MonoBehaviour
                     int playerNumber = player.GetComponent<PlayerDetails>().playerNumber;
                     GameObject card = drawPile[lastIndex];
                     Transform hand = player.transform.Find("Hand");
+                    GameObject handGameObject = hand.gameObject;
+                    float cardsOffset = handGameObject.GetComponent<Hand>().cardsOffset;
                     Vector3 startPos = card.transform.position;
                     Vector3 endPos = hand.position;
                     Quaternion startRot = card.transform.rotation;
@@ -155,7 +157,7 @@ public class DrawPile : MonoBehaviour
                     drawPile.RemoveAt(lastIndex);
 
                     yield return new WaitForSeconds(timeBetweenInstanciatingCards);
-                    hand.GetComponent<Hand>().AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, 0.1f);
+                    hand.GetComponent<Hand>().AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
                 }
             }
 
