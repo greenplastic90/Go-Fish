@@ -142,8 +142,6 @@ public class Hand : MonoBehaviour
 
         // Set the initial position and offset for the cards in Books Won
         Vector3 booksWonPosition = booksWonGameObject.transform.position;
-        float xOffset = 0.2f;
-
         // Instanciate a new Book 
         GameObject newBook = Instantiate(bookPrefab, booksWonPosition, Quaternion.identity);
         newBook.name = "Book" + value;
@@ -157,7 +155,6 @@ public class Hand : MonoBehaviour
         foreach (GameObject card in cardsToMove.ToList())
         {
             int index = cardsToMove.IndexOf(card);
-            Vector3 position = booksWonPosition + new Vector3(index * xOffset, 0, -index);
             StartCoroutine(gameLogic.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
             gameLogic.AdjustGameObjectsPositions(playerNumber, cardsToMove, newBook, cardsOffsetInbook, 0.75f);
