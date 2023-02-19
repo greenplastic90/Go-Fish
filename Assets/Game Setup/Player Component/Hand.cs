@@ -166,7 +166,10 @@ public class Hand : MonoBehaviour
         newBook.GetComponent<Book>().book = cardsToMove;
 
         // Add new book to booksWon list in in Books Won game object
-        booksWonGameObject.GetComponent<BooksWon>().booksWon.Add(newBook);
+        BooksWon booksWon = booksWonGameObject.GetComponent<BooksWon>();
+        booksWon.booksWon.Add(newBook);
+        booksWon.AdjustBooksPositions();
+
     }
 
 
