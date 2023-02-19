@@ -13,6 +13,7 @@ public class Hand : MonoBehaviour
 
     public PlayerDetails thisPlayerDetails;
     public GameObject booksWonGameObject;
+    public GameObject bookPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -193,6 +194,12 @@ public class Hand : MonoBehaviour
         }
 
     }
+    //todo Add below to Notion
+    //todo once all Cards are moved to desired position, Have books be at a slight offset to one another on the x axis
+    //todo instanciate Book, add all cards to a list in Book
+    //todo add the book to a list of Books in Books Won
+    //todo move adjust cards to GameLogic to be able to use with Book and Books Won as well.
+
 
     void MoveCardsToBooksWon(int value)
     {
@@ -203,7 +210,15 @@ public class Hand : MonoBehaviour
         Vector3 booksWonPosition = booksWonGameObject.transform.position;
         float xOffset = 0.2f;
 
-        // Move each card to the appropriate position in Books Won and shrink their size
+        // Instanciate a new Book 
+        GameObject newBook = Instantiate(bookPrefab, booksWonPosition, Quaternion.identity);
+        newBook.name = "Book" + value;
+
+        // Make it child of Books Won
+        newBook.transform.SetParent(booksWonGameObject.transform);
+
+
+        // Move each card to the appropriate position in newBook and shrink their size
         float shrinkScale = 0.5f;
         foreach (GameObject card in cardsToMove)
         {
@@ -211,12 +226,17 @@ public class Hand : MonoBehaviour
             Vector3 position = booksWonPosition + new Vector3(index * xOffset, 0, -index);
             StartCoroutine(MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
-            card.transform.SetParent(booksWonGameObject.transform, false);
+            card.transform.SetParent(newBook.transform, false);
         }
+
+        // Save cards list in newBook
+        newBook.GetComponent<Book>().book = cardsToMove;
+
+        // Add new book to booksWon list in in Books Won game object
+        booksWonGameObject.GetComponent<BooksWon>().booksWon.Add(newBook);
 
         // Remove the matching cards from the hand
         cardsInHand.RemoveAll(card => cardsToMove.Contains(card));
-        booksWonGameObject.GetComponent<BooksWon>().booksWon.Add(cardsToMove);
     }
 
 

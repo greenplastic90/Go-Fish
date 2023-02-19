@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BooksWon : MonoBehaviour
+public class Book : MonoBehaviour
 {
-    public List<GameObject> booksWon = new List<GameObject>();
-
+    public List<GameObject> book;
     // Start is called before the first frame update
     void Start()
     {
