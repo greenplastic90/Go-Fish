@@ -25,7 +25,7 @@ public class DrawPile : MonoBehaviour
         cardData = new List<CardData>();
         drawPile = new List<GameObject>();
         playerComponents = gameSetup.playerComponents;
-        numberOfCardsToDealAtGameStart = playerComponents.Count < 4 ? 20 : 5;
+        numberOfCardsToDealAtGameStart = playerComponents.Count < 4 ? 25 : 5;
 
         CreateSuffledDrawPile();
     }

@@ -224,10 +224,14 @@ public class Hand : MonoBehaviour
     {
         float time = 0f;
         Vector3 startingScale = card.transform.localScale;
-        Vector3 desiredScale = new Vector3(scale, scale, scale);
+        Vector3 desiredScale = new Vector3(scale, scale, 1f);
         while (time < duration)
         {
-            Vector3 newScale = Vector3.Lerp(startingScale, desiredScale, time / duration);
+            Vector3 newScale = new Vector3(
+                Mathf.Lerp(startingScale.x, desiredScale.x, time / duration),
+                Mathf.Lerp(startingScale.y, desiredScale.y, time / duration),
+                1f
+            );
             card.transform.localScale = newScale;
             time += Time.deltaTime;
             yield return null;
@@ -235,5 +239,6 @@ public class Hand : MonoBehaviour
         card.transform.localScale = desiredScale;
         AdjustCardPositions(0.75f);
     }
+
 
 }
