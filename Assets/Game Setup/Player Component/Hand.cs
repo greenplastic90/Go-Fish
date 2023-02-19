@@ -12,6 +12,7 @@ public class Hand : MonoBehaviour
     private bool cardsOffsetUpdated = false;
 
     public PlayerDetails thisPlayerDetails;
+    public GameObject booksWonGameObject;
 
     // Start is called before the first frame update
     void Start()
@@ -151,29 +152,14 @@ public class Hand : MonoBehaviour
                     card.GetComponent<Card>().ToggleIsFaceUp(false);
                 }
             });
-
-
         }
     }
 
 
-    void CheckForFourOfAKinds()
-    {
-        //todo loop over cardsInHand
-
-        //todo get all values
-
-        //todo IF there are 4 of the same value
-        //todo move cards and shrink their size as they go to Books Won GameObject
-        //todo we remove all Cards from cardsInHand with said value
-        //todo increment books won by 1
-
-        //todo ELSE contiune to next action
-
-    }
     [ContextMenu("Check For 4 Of A Kind")]
     public void CheckForFourOfAKind()
     {
+        bool foundFourOfAKind = false;
         Dictionary<int, int> valueCounts = new Dictionary<int, int>();
 
         foreach (GameObject card in cardsInHand)
@@ -192,16 +178,62 @@ public class Hand : MonoBehaviour
 
         foreach (int value in valueCounts.Keys)
         {
-            Debug.Log("Value => " + value);
             if (valueCounts[value] >= 4)
             {
-                Debug.Log("Four of a Kind Found ==> " + value);
+                foundFourOfAKind = true;
+
+                MoveCardsToBooksWon(value);
             }
         }
 
-        Debug.Log("No Four Of A Kinds Found");
+        if (!foundFourOfAKind)
+        {
+
+            Debug.Log("No Four Of A Kinds Found");
+        }
 
     }
 
+    void MoveCardsToBooksWon(int value)
+    {
+        // Find all the cards in the hand that match the specified value
+        List<GameObject> cardsToMove = cardsInHand.Where(cardInHand => cardInHand.GetComponent<Card>().value == value).ToList();
+
+        // Set the initial position and offset for the cards in Books Won
+        Vector3 booksWonPosition = booksWonGameObject.transform.position;
+        float xOffset = 0.2f;
+
+        // Move each card to the appropriate position in Books Won and shrink their size
+        float shrinkScale = 0.5f;
+        foreach (GameObject card in cardsToMove)
+        {
+            int index = cardsToMove.IndexOf(card);
+            Vector3 position = booksWonPosition + new Vector3(index * xOffset, 0, -index);
+            StartCoroutine(MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
+            StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
+            card.transform.SetParent(booksWonGameObject.transform, false);
+        }
+
+        // Remove the matching cards from the hand
+        cardsInHand.RemoveAll(card => cardsToMove.Contains(card));
+        booksWonGameObject.GetComponent<BooksWon>().booksWon.Add(cardsToMove);
+    }
+
+
+    IEnumerator ChangeCardScale(GameObject card, float scale, float duration)
+    {
+        float time = 0f;
+        Vector3 startingScale = card.transform.localScale;
+        Vector3 desiredScale = new Vector3(scale, scale, scale);
+        while (time < duration)
+        {
+            Vector3 newScale = Vector3.Lerp(startingScale, desiredScale, time / duration);
+            card.transform.localScale = newScale;
+            time += Time.deltaTime;
+            yield return null;
+        }
+        card.transform.localScale = desiredScale;
+        AdjustCardPositions(0.75f);
+    }
 
 }

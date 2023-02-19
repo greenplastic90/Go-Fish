@@ -25,7 +25,7 @@ public class DrawPile : MonoBehaviour
         cardData = new List<CardData>();
         drawPile = new List<GameObject>();
         playerComponents = gameSetup.playerComponents;
-        numberOfCardsToDealAtGameStart = playerComponents.Count < 4 ? 7 : 5;
+        numberOfCardsToDealAtGameStart = playerComponents.Count < 4 ? 20 : 5;
 
         CreateSuffledDrawPile();
     }
@@ -118,6 +118,10 @@ public class DrawPile : MonoBehaviour
     }
     IEnumerator DealCardsCoroutine()
     {
+        float timeBetweenInstanciatingCards = 0.05f;
+        float s = 4;
+        float coroutineDuration = 2.0f;
+
         for (int i = 0; i < numberOfCardsToDealAtGameStart; i++)
         {
             foreach (GameObject player in playerComponents)
@@ -133,19 +137,16 @@ public class DrawPile : MonoBehaviour
                     Quaternion startRot = card.transform.rotation;
                     Quaternion endRot = Quaternion.Euler(hand.position);
 
-                    float s = 2;
                     float t = 0;
                     while (t < 1)
                     {
-                        t += Time.deltaTime * 2;
-                        card.transform.position = Vector3.Lerp(startPos, endPos, t * s);
+                        t += Time.deltaTime * s;
+                        card.transform.position = Vector3.Lerp(startPos, endPos, t);
                         card.transform.rotation = Quaternion.Lerp(startRot, endRot, t);
                         yield return null;
-
-
                     }
 
-                    //? Only flip card for player 1
+                    // Only flip card for player 1
                     if (playerNumber == 1) { card.GetComponent<Card>().ToggleIsFaceUp(true); }
                     card.transform.SetParent(hand, true);
                     hand.GetComponent<Hand>().cardsInHand.Add(card);
@@ -156,6 +157,10 @@ public class DrawPile : MonoBehaviour
                     hand.GetComponent<Hand>().AdjustCardPositions(0.1f);
                 }
             }
+
+            // Reduce the duration of the coroutine
+            yield return new WaitForSeconds(coroutineDuration / numberOfCardsToDealAtGameStart);
         }
     }
+
 }
