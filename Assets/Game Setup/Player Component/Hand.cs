@@ -56,7 +56,8 @@ public class Hand : MonoBehaviour
         // Find the hand of the player you want to access using opposingPlayerNumber
         GameObject opposingPlayerComponent = GameObject.Find("Player " + opposingPlayerNumber);
         Hand opposingPlayerHand = opposingPlayerComponent.GetComponentInChildren<Hand>();
-        List<GameObject> oppositngPlayersCardsInHand = opposingPlayerHand.cardsInHand;
+
+
 
         // Find all the cards in the opposing player's hand that match the specified value
         List<GameObject> matchingCards = opposingPlayerHand.cardsInHand
@@ -71,7 +72,7 @@ public class Hand : MonoBehaviour
 
             // Update the positions of the cards in hands
             gameLogic.AdjustGameObjectsPositions(playerNumber, cardsInHand, PlayerComponent, cardsOffset, 0.75f);
-            opposingPlayerHand.gameLogic.AdjustGameObjectsPositions(playerNumber, oppositngPlayersCardsInHand, opposingPlayerComponent, cardsOffset, 0.75f);
+            opposingPlayerHand.gameLogic.AdjustGameObjectsPositions(opposingPlayerNumber, opposingPlayerHand.cardsInHand, opposingPlayerComponent, opposingPlayerHand.cardsOffset, 0.75f);
 
             // Set the parent of the matching cards to this hand
             matchingCards.ForEach(card =>
