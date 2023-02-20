@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BooksWon : MonoBehaviour
 {
-    private GameLogic gameLogic;
+    private GameLogic GameLogic;
     public List<GameObject> booksWon = new List<GameObject>();
     private float booksOffset = 0.5f;
     private float booksAdjustmentSpeed = 0.5f;
@@ -12,7 +12,7 @@ public class BooksWon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
+        GameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
     }
 
     // Update is called once per frame
@@ -22,6 +22,6 @@ public class BooksWon : MonoBehaviour
     }
     public void AdjustBookPositionsInBooksWon()
     {
-        gameLogic.AdjustGameObjectsPositions(booksWon, gameObject, booksOffset, booksAdjustmentSpeed);
+        GameLogic.AdjustGameObjectsPositions(booksWon, gameObject, booksOffset, booksAdjustmentSpeed);
     }
 }

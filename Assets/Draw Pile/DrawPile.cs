@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class DrawPile : MonoBehaviour
 {
-    private GameLogic gameLogic;
+    private GameLogic GameLogic;
     //? Public
     public float timeBetweenInstanciatingCards;
     public List<GameObject> drawPile;
     public GameObject cardPrefab;
     public List<GameObject> playerComponents;
 
-    public GameSetup gameSetup;
+    public GameSetup GameSetup;
 
     //? Private
     private List<CardData> cardData;
@@ -21,11 +21,11 @@ public class DrawPile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
-        gameSetup = GameObject.Find("Game Setup").GetComponent<GameSetup>();
+        GameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
+        GameSetup = GameObject.Find("Game Setup").GetComponent<GameSetup>();
         cardData = new List<CardData>();
         drawPile = new List<GameObject>();
-        playerComponents = gameSetup.playerComponents;
+        playerComponents = GameSetup.playerComponents;
         numberOfCardsToDealAtGameStart = playerComponents.Count < 4 ? 25 : 5;
 
         CreateSuffledDrawPile();
@@ -159,7 +159,7 @@ public class DrawPile : MonoBehaviour
 
                     yield return new WaitForSeconds(timeBetweenInstanciatingCards);
                     handGameObject.GetComponent<Hand>().AdjustCardPositionsInHand();
-                    // gameLogic.AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
+                    // GameLogic.AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
                 }
             }
 

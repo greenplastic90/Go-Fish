@@ -5,16 +5,18 @@ using System.Linq;
 
 public class Hand : MonoBehaviour
 {
-    private GameLogic gameLogic;
+    private GameLogic GameLogic;
+    public GameObject PlayerComponent;
+    public GameObject BooksWonGameObject;
+    public GameObject BookPrefab;
+    public DrawPile DrawPile;
     public List<GameObject> cardsInHand;
-    private int lastCardCount;
+    public PlayerDetails ThisPlayerDetails;
     public float cardsOffset = 0.5f;
     private bool playerDetailsUpdated = false;
-    public PlayerDetails thisPlayerDetails;
+
     private int playerNumber;
-    public GameObject PlayerComponent;
-    public GameObject booksWonGameObject;
-    public GameObject bookPrefab;
+
 
     public bool isMainPlayer = false;
 
@@ -22,18 +24,19 @@ public class Hand : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
+        GameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
+        DrawPile = GameObject.Find("Draw Pile").GetComponent<DrawPile>();
         cardsInHand = new List<GameObject>();
-        lastCardCount = cardsInHand.Count;
+
 
     }
 
     void Update()
     {
         // Updates cardOffset once thisPlayerDetails has been assigned
-        if (thisPlayerDetails != null && !playerDetailsUpdated)
+        if (ThisPlayerDetails != null && !playerDetailsUpdated)
         {
-            playerNumber = thisPlayerDetails.playerNumber;
+            playerNumber = ThisPlayerDetails.playerNumber;
 
             playerDetailsUpdated = true;
 
@@ -56,7 +59,7 @@ public class Hand : MonoBehaviour
             cardsInHand.Sort(new CardValueComparer());
         }
 
-        gameLogic.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
+        GameLogic.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
     }
 
     [SerializeField]
@@ -93,7 +96,7 @@ public class Hand : MonoBehaviour
             matchingCards.ForEach(card =>
             {
                 card.transform.SetParent(transform);
-                if (thisPlayerDetails.playerNumber == 1)
+                if (ThisPlayerDetails.playerNumber == 1)
                 {
                     card.GetComponent<Card>().ToggleIsFaceUp(true);
                 }
@@ -152,21 +155,21 @@ public class Hand : MonoBehaviour
         cardsInHand.RemoveAll(card => cardsToMove.Contains(card));
 
         // Set the initial position and offset for the cards in Books Won
-        Vector3 booksWonPosition = booksWonGameObject.transform.position;
+        Vector3 booksWonPosition = BooksWonGameObject.transform.position;
         // Instanciate a new Book 
-        GameObject newBook = Instantiate(bookPrefab, booksWonPosition, Quaternion.identity);
+        GameObject newBook = Instantiate(BookPrefab, booksWonPosition, Quaternion.identity);
         newBook.name = "Book" + value;
-        float cardsOffsetInbook = newBook.GetComponent<Book>().cardsOffset;
+
 
         // Make it child of Books Won
-        newBook.transform.SetParent(booksWonGameObject.transform);
+        newBook.transform.SetParent(BooksWonGameObject.transform);
 
         // Move each card to the appropriate position in newBook and shrink their size
         float shrinkScale = 0.5f;
         foreach (GameObject card in cardsToMove.ToList())
         {
             int index = cardsToMove.IndexOf(card);
-            StartCoroutine(gameLogic.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
+            StartCoroutine(GameLogic.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
             AdjustCardPositionsInHand();
             card.transform.SetParent(newBook.transform, false);
@@ -177,13 +180,22 @@ public class Hand : MonoBehaviour
         newBook.GetComponent<Book>().book = cardsToMove;
 
         // Add new book to booksWon list in in Books Won game object
-        BooksWon booksWon = booksWonGameObject.GetComponent<BooksWon>();
+        BooksWon booksWon = BooksWonGameObject.GetComponent<BooksWon>();
         booksWon.booksWon.Add(newBook);
         booksWon.AdjustBookPositionsInBooksWon();
 
     }
 
-
+    private void DrawCardFromDrawPile()
+    {
+        //todo params => 
+        //todo Check that draw pile isn't empty
+        //todo locate card thats top of the draw pile (Last Index)
+        //todo change Card parent to this Hand
+        //todo add Card to cardsInHAnd 
+        //todo remove Card from drawPile in DrawPile
+        //todo adjust cards postion in hand
+    }
 
     IEnumerator ChangeCardScale(GameObject card, float scale, float duration)
     {

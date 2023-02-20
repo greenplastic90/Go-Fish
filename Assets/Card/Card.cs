@@ -7,7 +7,7 @@ public class Card : MonoBehaviour
     public Sprite backSprite;
     public Sprite frontSprite;
     public int value;
-    public SpriteRenderer cardSpriteRenderer;
+    public SpriteRenderer CardSpriteRenderer;
 
     public bool isFaceUp;
     // Start is called before the first frame update
@@ -31,7 +31,7 @@ public class Card : MonoBehaviour
 
     void UpdateSprite()
     {
-        cardSpriteRenderer.sprite = isFaceUp ? frontSprite : backSprite;
+        CardSpriteRenderer.sprite = isFaceUp ? frontSprite : backSprite;
     }
 
 }
