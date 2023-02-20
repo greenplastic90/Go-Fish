@@ -158,7 +158,8 @@ public class DrawPile : MonoBehaviour
                     drawPile.RemoveAt(lastIndex);
 
                     yield return new WaitForSeconds(timeBetweenInstanciatingCards);
-                    gameLogic.AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
+                    handGameObject.GetComponent<Hand>().AdjustCardPositionsInHand();
+                    // gameLogic.AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
                 }
             }
 

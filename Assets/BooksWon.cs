@@ -20,7 +20,7 @@ public class BooksWon : MonoBehaviour
     {
 
     }
-    public void AdjustBooksPositions()
+    public void AdjustBookPositionsInBooksWon()
     {
         gameLogic.AdjustGameObjectsPositions(booksWon, gameObject, booksOffset, booksAdjustmentSpeed);
     }

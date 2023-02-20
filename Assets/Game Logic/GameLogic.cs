@@ -41,16 +41,6 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    // Custom comparer to compare the value of cards
-    private class CardValueComparer : IComparer<GameObject>
-    {
-        public int Compare(GameObject a, GameObject b)
-        {
-            int valueA = a.GetComponent<Card>().value;
-            int valueB = b.GetComponent<Card>().value;
-            return valueB.CompareTo(valueA);
-        }
-    }
 
     private Vector3 generateCardPosition(GameObject parentGameObject, int i, int numberOfCards, float cardsOffset)
     {
