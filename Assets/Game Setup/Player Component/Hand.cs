@@ -96,7 +96,7 @@ public class Hand : MonoBehaviour
             matchingCards.ForEach(card =>
             {
                 card.transform.SetParent(transform);
-                if (ThisPlayerDetails.playerNumber == 1)
+                if (isMainPlayer)
                 {
                     card.GetComponent<Card>().ToggleIsFaceUp(true);
                 }
@@ -185,16 +185,36 @@ public class Hand : MonoBehaviour
         booksWon.AdjustBookPositionsInBooksWon();
 
     }
-
+    [ContextMenu("Draw Card")]
     private void DrawCardFromDrawPile()
     {
         //todo params => 
         //todo Check that draw pile isn't empty
+        List<GameObject> drawPile = DrawPile.GetComponent<DrawPile>().drawPile;
+        if (drawPile.Count < 1)
+        {
+            Debug.Log("Draw pile is empty ");
+            return;
+        }
         //todo locate card thats top of the draw pile (Last Index)
+        int lastIndex = drawPile.Count - 1;
+        GameObject CardGameObject = drawPile[lastIndex];
         //todo change Card parent to this Hand
+        CardGameObject.transform.SetParent(gameObject.transform);
         //todo add Card to cardsInHAnd 
+        cardsInHand.Add(CardGameObject);
         //todo remove Card from drawPile in DrawPile
+        drawPile.Remove(CardGameObject);
+        //todo move card
+        StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position, gameObject.transform.position, 0.5f));
+        Debug.Log("isMainPlayer => " + isMainPlayer);
+        if (isMainPlayer)
+        {
+
+            CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
+        }
         //todo adjust cards postion in hand
+        AdjustCardPositionsInHand();
     }
 
     IEnumerator ChangeCardScale(GameObject card, float scale, float duration)
