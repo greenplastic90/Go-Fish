@@ -6,7 +6,7 @@ public class DrawPile : MonoBehaviour
 {
     private GameLogic GameLogic;
     //? Public
-    public float timeBetweenInstanciatingCards;
+    private float timeBetweenInstanciatingCards = 0.05f;
     public List<GameObject> drawPile;
     public GameObject cardPrefab;
     public List<GameObject> playerComponents;

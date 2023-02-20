@@ -206,7 +206,8 @@ public class Hand : MonoBehaviour
         //todo remove Card from drawPile in DrawPile
         drawPile.Remove(CardGameObject);
         //todo move card
-        StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position, gameObject.transform.position, 0.5f));
+        float cardZ = CardGameObject.transform.position.z;
+        StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, 0.5f));
         StartCoroutine(RotateGameObject(CardGameObject));
         if (isMainPlayer)
         {

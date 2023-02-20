@@ -47,7 +47,7 @@ public class GameLogic : MonoBehaviour
 
         float yPos = parentGameObject.transform.position.y;
         float xPos = (i - (numberOfCards - 1) / 2f) * cardsOffset + parentGameObject.transform.position.x;
-        float zPos = i + 1;
+        float zPos = i - 1;
         return new Vector3(xPos, yPos, zPos);
     }
 
