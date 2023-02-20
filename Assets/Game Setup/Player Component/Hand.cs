@@ -16,9 +16,11 @@ public class Hand : MonoBehaviour
     private bool playerDetailsUpdated = false;
 
     private int playerNumber;
-
-
     public bool isMainPlayer = false;
+    [SerializeField]
+    private float drawCardSpeed = 0.5f;
+    private float rotateCardSpeed = 3f;
+    private float adjustCardsPositionSpeed = 0.25f;
 
 
     // Start is called before the first frame update
@@ -51,15 +53,21 @@ public class Hand : MonoBehaviour
 
 
     }
-
     public void AdjustCardPositionsInHand()
+    {
+        StartCoroutine(AdjustCardPositionsInHandCoroutine());
+    }
+
+    private IEnumerator AdjustCardPositionsInHandCoroutine()
     {
         if (isMainPlayer)
         {
             cardsInHand.Sort(new CardValueComparer());
         }
 
-        GameLogic.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
+
+        GameLogic.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, adjustCardsPositionSpeed);
+        yield return null;
     }
 
     [SerializeField]
@@ -185,47 +193,55 @@ public class Hand : MonoBehaviour
         booksWon.AdjustBookPositionsInBooksWon();
 
     }
+
     [ContextMenu("Draw Card")]
     public void DrawCardFromDrawPile()
     {
-
+        StartCoroutine(DrawCardFromDrawPileCoroutine());
+    }
+    private IEnumerator DrawCardFromDrawPileCoroutine()
+    {
         //todo Check that draw pile isn't empty
         List<GameObject> drawPile = DrawPile.GetComponent<DrawPile>().drawPile;
-        if (drawPile.Count < 1)
+        if (drawPile.Count > 0)
         {
-            Debug.Log("Draw pile is empty ");
-            return;
+            //todo locate card thats top of the draw pile (Last Index)
+            int lastIndex = drawPile.Count - 1;
+            GameObject CardGameObject = drawPile[lastIndex];
+            //todo change Card parent to this Hand
+            CardGameObject.transform.SetParent(gameObject.transform);
+            //todo add Card to cardsInHAnd 
+            cardsInHand.Add(CardGameObject);
+            //todo remove Card from drawPile in DrawPile
+            drawPile.Remove(CardGameObject);
+            //todo move card
+            float cardZ = CardGameObject.transform.position.z;
+
+
+            yield return StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, drawCardSpeed));
+            Debug.Log("MoveToDesiredPosition");
+            StartCoroutine(RotateGameObject(CardGameObject));
+            Debug.Log("RotateGameObject");
+            if (isMainPlayer)
+            {
+                CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
+            }
+            Debug.Log("AdjustCardPositionsInHandCoroutine");
+            //todo adjust cards postion in hand
+            StartCoroutine(AdjustCardPositionsInHandCoroutine());
         }
-        //todo locate card thats top of the draw pile (Last Index)
-        int lastIndex = drawPile.Count - 1;
-        GameObject CardGameObject = drawPile[lastIndex];
-        //todo change Card parent to this Hand
-        CardGameObject.transform.SetParent(gameObject.transform);
-        //todo add Card to cardsInHAnd 
-        cardsInHand.Add(CardGameObject);
-        //todo remove Card from drawPile in DrawPile
-        drawPile.Remove(CardGameObject);
-        //todo move card
-        float cardZ = CardGameObject.transform.position.z;
-        StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, 0.5f));
-        StartCoroutine(RotateGameObject(CardGameObject));
-        if (isMainPlayer)
-        {
-            CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
-        }
-        //todo adjust cards postion in hand
-        AdjustCardPositionsInHand();
     }
+
 
     IEnumerator RotateGameObject(GameObject GameObject)
     {
         Quaternion startRot = GameObject.transform.rotation;
         Quaternion endRot = Quaternion.Euler(transform.position);
-        float s = 1.25f;
+
         float t = 0;
         while (t < 1)
         {
-            t += Time.deltaTime * s;
+            t += Time.deltaTime * rotateCardSpeed;
             GameObject.transform.rotation = Quaternion.Lerp(startRot, endRot, t);
             yield return null;
         }
