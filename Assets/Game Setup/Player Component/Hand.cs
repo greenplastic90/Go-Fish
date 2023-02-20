@@ -207,14 +207,27 @@ public class Hand : MonoBehaviour
         drawPile.Remove(CardGameObject);
         //todo move card
         StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position, gameObject.transform.position, 0.5f));
-        Debug.Log("isMainPlayer => " + isMainPlayer);
+        StartCoroutine(RotateGameObject(CardGameObject));
         if (isMainPlayer)
         {
-
             CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
         }
         //todo adjust cards postion in hand
         AdjustCardPositionsInHand();
+    }
+
+    IEnumerator RotateGameObject(GameObject GameObject)
+    {
+        Quaternion startRot = GameObject.transform.rotation;
+        Quaternion endRot = Quaternion.Euler(transform.position);
+        float s = 1.5f;
+        float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime * s;
+            GameObject.transform.rotation = Quaternion.Lerp(startRot, endRot, t);
+            yield return null;
+        }
     }
 
     IEnumerator ChangeCardScale(GameObject card, float scale, float duration)
