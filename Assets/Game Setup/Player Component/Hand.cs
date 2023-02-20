@@ -186,9 +186,9 @@ public class Hand : MonoBehaviour
 
     }
     [ContextMenu("Draw Card")]
-    private void DrawCardFromDrawPile()
+    public void DrawCardFromDrawPile()
     {
-        //todo params => 
+
         //todo Check that draw pile isn't empty
         List<GameObject> drawPile = DrawPile.GetComponent<DrawPile>().drawPile;
         if (drawPile.Count < 1)
@@ -220,7 +220,7 @@ public class Hand : MonoBehaviour
     {
         Quaternion startRot = GameObject.transform.rotation;
         Quaternion endRot = Quaternion.Euler(transform.position);
-        float s = 1.5f;
+        float s = 1.25f;
         float t = 0;
         while (t < 1)
         {

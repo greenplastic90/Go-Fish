@@ -119,47 +119,16 @@ public class DrawPile : MonoBehaviour
     }
     IEnumerator DealCardsCoroutine()
     {
-        float timeBetweenInstanciatingCards = 0.05f;
-        float s = 4;
-        float coroutineDuration = 2.0f;
+
+        float coroutineDuration = 3.0f;
 
         for (int i = 0; i < numberOfCardsToDealAtGameStart; i++)
         {
-            foreach (GameObject player in playerComponents)
+            foreach (GameObject PlayerComponentGameObject in playerComponents)
             {
                 if (drawPile.Count > 0)
                 {
-                    int lastIndex = drawPile.Count - 1;
-                    int playerNumber = player.GetComponent<PlayerDetails>().playerNumber;
-                    GameObject card = drawPile[lastIndex];
-                    Transform hand = player.transform.Find("Hand");
-                    GameObject handGameObject = hand.gameObject;
-                    float cardsOffset = handGameObject.GetComponent<Hand>().cardsOffset;
-                    Vector3 startPos = card.transform.position;
-                    Vector3 endPos = hand.position;
-                    Quaternion startRot = card.transform.rotation;
-                    Quaternion endRot = Quaternion.Euler(hand.position);
-
-                    float t = 0;
-                    while (t < 1)
-                    {
-                        t += Time.deltaTime * s;
-                        card.transform.position = Vector3.Lerp(startPos, endPos, t);
-                        card.transform.rotation = Quaternion.Lerp(startRot, endRot, t);
-                        yield return null;
-                    }
-
-                    // Only flip card for player 1
-                    if (playerNumber == 1) { card.GetComponent<Card>().ToggleIsFaceUp(true); }
-                    card.transform.SetParent(hand, true);
-                    List<GameObject> cardsInHand = hand.GetComponent<Hand>().cardsInHand;
-                    cardsInHand.Add(card);
-
-                    drawPile.RemoveAt(lastIndex);
-
-                    yield return new WaitForSeconds(timeBetweenInstanciatingCards);
-                    handGameObject.GetComponent<Hand>().AdjustCardPositionsInHand();
-                    // GameLogic.AdjustGameObjectsPositions(cardsInHand, hand.transform.parent.gameObject, cardsOffset, 0.1f);
+                    PlayerComponentGameObject.transform.Find("Hand").GetComponent<Hand>().DrawCardFromDrawPile();
                 }
             }
 
