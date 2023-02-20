@@ -22,6 +22,6 @@ public class BooksWon : MonoBehaviour
     }
     public void AdjustBooksPositions()
     {
-        gameLogic.AdjustGameObjectsPositions(0, booksWon, gameObject, booksOffset, booksAdjustmentSpeed);
+        gameLogic.AdjustGameObjectsPositions(booksWon, gameObject, booksOffset, booksAdjustmentSpeed);
     }
 }

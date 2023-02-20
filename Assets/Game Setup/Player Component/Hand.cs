@@ -16,6 +16,8 @@ public class Hand : MonoBehaviour
     public GameObject booksWonGameObject;
     public GameObject bookPrefab;
 
+    public bool isMainPlayer = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,10 @@ public class Hand : MonoBehaviour
         gameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
         cardsInHand = new List<GameObject>();
         lastCardCount = cardsInHand.Count;
+        if (playerNumber == 1)
+        {
+            isMainPlayer = true;
+        }
     }
 
     void Update()
@@ -38,11 +44,6 @@ public class Hand : MonoBehaviour
 
 
     }
-
-
-    // Custom comparer to compare the value of cards
-
-
 
     [SerializeField]
     private int opposingPlayerNumber = 2;
@@ -71,8 +72,8 @@ public class Hand : MonoBehaviour
             cardsInHand.AddRange(matchingCards);
 
             // Update the positions of the cards in hands
-            gameLogic.AdjustGameObjectsPositions(playerNumber, cardsInHand, PlayerComponent, cardsOffset, 0.75f);
-            opposingPlayerHand.gameLogic.AdjustGameObjectsPositions(opposingPlayerNumber, opposingPlayerHand.cardsInHand, opposingPlayerComponent, opposingPlayerHand.cardsOffset, 0.75f);
+            gameLogic.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
+            opposingPlayerHand.gameLogic.AdjustGameObjectsPositions(opposingPlayerHand.cardsInHand, opposingPlayerComponent, opposingPlayerHand.cardsOffset, 0.75f);
 
             // Set the parent of the matching cards to this hand
             matchingCards.ForEach(card =>
@@ -128,11 +129,6 @@ public class Hand : MonoBehaviour
         }
 
     }
-    //todo Add below to Notion
-    //todo once all Cards are moved to desired position, Have books be at a slight offset to one another on the x axis
-    //todo instanciate Book, add all cards to a list in Book
-    //todo add the book to a list of Books in Books Won
-    //todo move adjust cards to GameLogic to be able to use with Book and Books Won as well.
 
 
     void MoveCardsToBooksWon(int value)
@@ -157,7 +153,7 @@ public class Hand : MonoBehaviour
             int index = cardsToMove.IndexOf(card);
             StartCoroutine(gameLogic.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
-            gameLogic.AdjustGameObjectsPositions(playerNumber, cardsToMove, newBook, cardsOffsetInbook, 0.75f);
+            gameLogic.AdjustGameObjectsPositions(cardsToMove, newBook, cardsOffsetInbook, 0.75f);
             card.transform.SetParent(newBook.transform, false);
             cardsInHand.Remove(card);
         }
@@ -191,7 +187,7 @@ public class Hand : MonoBehaviour
             yield return null;
         }
         card.transform.localScale = desiredScale;
-        gameLogic.AdjustGameObjectsPositions(playerNumber, cardsInHand, PlayerComponent, cardsOffset, 0.75f);
+        gameLogic.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, 0.75f);
     }
 
 

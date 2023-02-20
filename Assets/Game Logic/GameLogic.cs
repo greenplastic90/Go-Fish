@@ -18,13 +18,9 @@ public class GameLogic : MonoBehaviour
 
     }
 
-    public void AdjustGameObjectsPositions(int playerNumber, List<GameObject> objectsList, GameObject parentGameObject, float cardsOffset, float speed)
+    public void AdjustGameObjectsPositions(List<GameObject> objectsList, GameObject parentGameObject, float cardsOffset, float speed)
     {
-        if (playerNumber == 1)
-        {
-            // Sort the cards by value
-            objectsList.Sort(new CardValueComparer());
-        }
+
 
 
 
@@ -45,6 +41,7 @@ public class GameLogic : MonoBehaviour
         }
     }
 
+    // Custom comparer to compare the value of cards
     private class CardValueComparer : IComparer<GameObject>
     {
         public int Compare(GameObject a, GameObject b)
