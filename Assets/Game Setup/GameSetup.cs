@@ -72,6 +72,9 @@ public class GameSetup : MonoBehaviour
         playerComponent.name = "Player " + playerNumber; // uniqe object name
         playerComponent.GetComponent<PlayerDetails>().playerNumber = playerNumber;
         playerComponents.Add(playerComponent);
+        // playerComponent.transform.Find("Hand").GetComponent<Hand>().drawCardSpeed = 2f;
+        Debug.Log(playerComponent.transform.Find("Hand").GetComponent<Hand>().drawCardSpeed);
+
     }
 
     void InstanciateDrawPile()

@@ -26,7 +26,7 @@ public class DrawPile : MonoBehaviour
         cardData = new List<CardData>();
         drawPile = new List<GameObject>();
         playerComponents = GameSetup.playerComponents;
-        numberOfCardsToDealAtGameStart = playerComponents.Count < 4 ? 5 : 5;
+        numberOfCardsToDealAtGameStart = playerComponents.Count < 4 ? 7 : 5;
 
         CreateSuffledDrawPile();
     }
@@ -120,7 +120,7 @@ public class DrawPile : MonoBehaviour
     IEnumerator DealCardsCoroutine()
     {
 
-        float coroutineDuration = 3.0f;
+        float coroutineDuration = 1.5f;
 
         for (int i = 0; i < numberOfCardsToDealAtGameStart; i++)
         {

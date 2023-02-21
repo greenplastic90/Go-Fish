@@ -18,9 +18,11 @@ public class Hand : MonoBehaviour
     private int playerNumber;
     public bool isMainPlayer = false;
     [SerializeField]
-    private float drawCardSpeed = 0.5f;
-    private float rotateCardSpeed = 3f;
-    private float adjustCardsPositionSpeed = 0.25f;
+    public float drawCardSpeed;
+    [SerializeField]
+    private float rotateCardSpeed;
+    [SerializeField]
+    private float adjustCardsPositionSpeed;
 
 
     // Start is called before the first frame update
@@ -197,6 +199,7 @@ public class Hand : MonoBehaviour
     [ContextMenu("Draw Card")]
     public void DrawCardFromDrawPile()
     {
+
         StartCoroutine(DrawCardFromDrawPileCoroutine());
     }
     private IEnumerator DrawCardFromDrawPileCoroutine()
@@ -218,17 +221,20 @@ public class Hand : MonoBehaviour
             float cardZ = CardGameObject.transform.position.z;
 
 
-            yield return StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, drawCardSpeed));
-            Debug.Log("MoveToDesiredPosition");
-            StartCoroutine(RotateGameObject(CardGameObject));
-            Debug.Log("RotateGameObject");
+            StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, drawCardSpeed));
+            // Debug.Log("MoveToDesiredPosition");
+
+            yield return StartCoroutine(RotateGameObject(CardGameObject));
+            // Debug.Log("RotateGameObject");
             if (isMainPlayer)
             {
                 CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
             }
-            Debug.Log("AdjustCardPositionsInHandCoroutine");
+
+            // Debug.Log("AdjustCardPositionsInHandCoroutine");
             //todo adjust cards postion in hand
             StartCoroutine(AdjustCardPositionsInHandCoroutine());
+
         }
     }
 
