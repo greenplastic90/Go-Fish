@@ -74,7 +74,7 @@ public class GameSetup : MonoBehaviour
         playerComponents.Add(playerComponent);
 
         Hand hand = playerComponent.transform.Find("Hand").GetComponent<Hand>();
-
+        // changes for the main player
         if (playerNumber == 1)
         {
             Vector3 booksWonPosition = playerComponent.transform.Find("Books Won").transform.position;

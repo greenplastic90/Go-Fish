@@ -181,7 +181,7 @@ public class Hand : MonoBehaviour
         if (!foundFourOfAKind)
         {
 
-            Debug.Log("No Four Of A Kinds Found");
+            // Debug.Log("No Four Of A Kinds Found");
         }
 
     }

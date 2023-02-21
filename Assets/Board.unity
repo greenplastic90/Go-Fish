@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b5716d82c2ca4a31be4737504e4c7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfPlayers: 2
+  numberOfPlayers: 3
   drawPilePrefab: {fileID: 3682224032827324321, guid: 0e58971bc8fe5416b9ec93db063b46e3, type: 3}
   playerComponentPrefab: {fileID: 8517988980065891036, guid: 3a9a6b6f26fa24851850ee888ea406df, type: 3}
   playerComponents: []
@@ -182,6 +182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1369918687}
   - component: {fileID: 1369918686}
+  - component: {fileID: 1369918688}
   m_Layer: 0
   m_Name: Game Logic
   m_TagString: Untagged
@@ -216,6 +217,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1369918688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369918685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9783b8f9419004117a006ea2ddd17413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1544878780
 GameObject:
   m_ObjectHideFlags: 0
