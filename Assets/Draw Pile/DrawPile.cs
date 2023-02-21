@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DrawPile : MonoBehaviour
 {
-    private GameLogic GameLogic;
+    private Movement Movement;
     //? Public
     private float timeBetweenInstanciatingCards = 0.01f;
     public List<GameObject> drawPile;
@@ -16,12 +16,14 @@ public class DrawPile : MonoBehaviour
     //? Private
     private List<CardData> cardData;
     private int numberOfCardsToDealAtGameStart;
+    [SerializeField]
+    float durationBetweenCardsDealt = 20;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        GameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
+        Movement = GameObject.Find("Game Logic").GetComponent<Movement>();
         GameSetup = GameObject.Find("Game Setup").GetComponent<GameSetup>();
         cardData = new List<CardData>();
         drawPile = new List<GameObject>();
@@ -100,7 +102,6 @@ public class DrawPile : MonoBehaviour
             // Add a delay before instantiating the next card
             yield return new WaitForSeconds(timeBetweenInstanciatingCards);
         }
-
         DealCards();
 
 
@@ -108,6 +109,9 @@ public class DrawPile : MonoBehaviour
     void DealCards()
     {
 
+        Debug.Log("drawPile.Count " + drawPile.Count);
+        Debug.Log("numberOfCardsToDealAtGameStart " + numberOfCardsToDealAtGameStart);
+        Debug.Log("playerComponents.Count " + playerComponents.Count);
 
         if (drawPile.Count < numberOfCardsToDealAtGameStart * playerComponents.Count)
         {
@@ -120,7 +124,6 @@ public class DrawPile : MonoBehaviour
     IEnumerator DealCardsCoroutine()
     {
 
-        float coroutineDuration = 1.5f;
 
         for (int i = 0; i < numberOfCardsToDealAtGameStart; i++)
         {
@@ -133,7 +136,7 @@ public class DrawPile : MonoBehaviour
             }
 
             // Reduce the duration of the coroutine
-            yield return new WaitForSeconds(coroutineDuration / numberOfCardsToDealAtGameStart);
+            yield return new WaitForSeconds(durationBetweenCardsDealt / numberOfCardsToDealAtGameStart);
         }
     }
 

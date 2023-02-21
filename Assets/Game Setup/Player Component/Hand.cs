@@ -5,13 +5,14 @@ using System.Linq;
 
 public class Hand : MonoBehaviour
 {
-    private GameLogic GameLogic;
+    private Movement Movement;
     public GameObject PlayerComponent;
     public GameObject BooksWonGameObject;
     public GameObject BookPrefab;
     public DrawPile DrawPile;
     public List<GameObject> cardsInHand;
     public PlayerDetails ThisPlayerDetails;
+    bool isPlayerTurn = true;
     public float cardsOffset = 0.5f;
     private bool playerDetailsUpdated = false;
 
@@ -28,7 +29,7 @@ public class Hand : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameLogic = GameObject.Find("Game Logic").GetComponent<GameLogic>();
+        Movement = GameObject.Find("Game Logic").GetComponent<Movement>();
         DrawPile = GameObject.Find("Draw Pile").GetComponent<DrawPile>();
         cardsInHand = new List<GameObject>();
 
@@ -55,6 +56,33 @@ public class Hand : MonoBehaviour
 
 
     }
+
+    [ContextMenu("Take Turn")]
+    public bool TakeTurn()
+    {
+        //todo ask for card
+        bool opposingPlayerHasCard = AskForCardFromAnotherPlayer();
+
+
+
+        if (opposingPlayerHasCard)
+        {
+
+            Debug.Log("Player " + playerNumber + " Take Another Turn");
+            return true;
+        }
+        else
+        {
+            DrawCardFromDrawPile();
+            Debug.Log("Player " + playerNumber + " Turn Ends");
+            return false;
+        }
+
+
+
+        //todo
+
+    }
     public void AdjustCardPositionsInHand()
     {
         StartCoroutine(AdjustCardPositionsInHandCoroutine());
@@ -68,7 +96,7 @@ public class Hand : MonoBehaviour
         }
 
 
-        GameLogic.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, adjustCardsPositionSpeed);
+        Movement.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, adjustCardsPositionSpeed);
         yield return null;
     }
 
@@ -79,7 +107,7 @@ public class Hand : MonoBehaviour
     private int cardValue = 2;
 
     [ContextMenu("Ask For Card")]
-    void AskForCardFromAnotherPlayer()
+    bool AskForCardFromAnotherPlayer()
     {
         // Find the hand of the player you want to access using opposingPlayerNumber
         GameObject opposingPlayerComponent = GameObject.Find("Player " + opposingPlayerNumber);
@@ -115,7 +143,10 @@ public class Hand : MonoBehaviour
                     card.GetComponent<Card>().ToggleIsFaceUp(false);
                 }
             });
+            CheckForFourOfAKind();
+            return true;
         }
+        return false;
     }
 
 
@@ -166,7 +197,7 @@ public class Hand : MonoBehaviour
 
         // Set the initial position and offset for the cards in Books Won
         Vector3 booksWonPosition = BooksWonGameObject.transform.position;
-        // Instanciate a new Book 
+        // Instanciate a new Book
         GameObject newBook = Instantiate(BookPrefab, booksWonPosition, Quaternion.identity);
         newBook.name = "Book" + value;
 
@@ -179,7 +210,7 @@ public class Hand : MonoBehaviour
         foreach (GameObject card in cardsToMove.ToList())
         {
             int index = cardsToMove.IndexOf(card);
-            StartCoroutine(GameLogic.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
+            StartCoroutine(Movement.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
             AdjustCardPositionsInHand();
             card.transform.SetParent(newBook.transform, false);
@@ -195,6 +226,8 @@ public class Hand : MonoBehaviour
         booksWon.AdjustBookPositionsInBooksWon();
 
     }
+
+
 
     [ContextMenu("Draw Card")]
     public void DrawCardFromDrawPile()
@@ -213,7 +246,7 @@ public class Hand : MonoBehaviour
             GameObject CardGameObject = drawPile[lastIndex];
             //todo change Card parent to this Hand
             CardGameObject.transform.SetParent(gameObject.transform);
-            //todo add Card to cardsInHAnd 
+            //todo add Card to cardsInHAnd
             cardsInHand.Add(CardGameObject);
             //todo remove Card from drawPile in DrawPile
             drawPile.Remove(CardGameObject);
@@ -221,7 +254,7 @@ public class Hand : MonoBehaviour
             float cardZ = CardGameObject.transform.position.z;
 
 
-            StartCoroutine(GameLogic.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, drawCardSpeed));
+            StartCoroutine(Movement.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, drawCardSpeed));
             // Debug.Log("MoveToDesiredPosition");
 
             yield return StartCoroutine(RotateGameObject(CardGameObject));
@@ -233,8 +266,8 @@ public class Hand : MonoBehaviour
 
             // Debug.Log("AdjustCardPositionsInHandCoroutine");
             //todo adjust cards postion in hand
-            StartCoroutine(AdjustCardPositionsInHandCoroutine());
-
+            yield return StartCoroutine(AdjustCardPositionsInHandCoroutine());
+            CheckForFourOfAKind();
         }
     }
 
@@ -252,6 +285,7 @@ public class Hand : MonoBehaviour
             yield return null;
         }
     }
+
 
     IEnumerator ChangeCardScale(GameObject card, float scale, float duration)
     {
