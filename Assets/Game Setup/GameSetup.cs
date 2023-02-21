@@ -72,7 +72,16 @@ public class GameSetup : MonoBehaviour
         playerComponent.name = "Player " + playerNumber; // uniqe object name
         playerComponent.GetComponent<PlayerDetails>().playerNumber = playerNumber;
         playerComponents.Add(playerComponent);
-        // playerComponent.transform.Find("Hand").GetComponent<Hand>().drawCardSpeed = 2f;
+
+        Hand hand = playerComponent.transform.Find("Hand").GetComponent<Hand>();
+
+        if (playerNumber == 1)
+        {
+            Vector3 booksWonPosition = playerComponent.transform.Find("Books Won").transform.position;
+            playerComponent.transform.Find("Books Won").transform.position = booksWonPosition + new Vector3(0, 3f, 0);
+        }
+
+
         Debug.Log(playerComponent.transform.Find("Hand").GetComponent<Hand>().drawCardSpeed);
 
     }

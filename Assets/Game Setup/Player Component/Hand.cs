@@ -12,12 +12,10 @@ public class Hand : MonoBehaviour
     public DrawPile DrawPile;
     public List<GameObject> cardsInHand;
     public PlayerDetails ThisPlayerDetails;
-    bool isPlayerTurn = true;
     public float cardsOffset = 0.5f;
     private bool playerDetailsUpdated = false;
-
     private int playerNumber;
-    public bool isMainPlayer = false;
+    public bool isMainPlayer;
     [SerializeField]
     public float drawCardSpeed;
     [SerializeField]
