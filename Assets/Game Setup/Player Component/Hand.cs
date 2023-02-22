@@ -185,9 +185,12 @@ public class Hand : MonoBehaviour
         }
 
     }
-
-
     void MoveCardsToBooksWon(int value)
+    {
+        StartCoroutine(MoveCardsToBooksWonCoroutine(value));
+    }
+
+    IEnumerator MoveCardsToBooksWonCoroutine(int value)
     {
         // Find all the cards in the hand that match the specified value
         List<GameObject> cardsToMove = cardsInHand.Where(cardInHand => cardInHand.GetComponent<Card>().value == value).ToList();
@@ -208,12 +211,12 @@ public class Hand : MonoBehaviour
         foreach (GameObject card in cardsToMove.ToList())
         {
             int index = cardsToMove.IndexOf(card);
-            StartCoroutine(Movement.MoveToDesiredPosition(card, card.transform.position, booksWonPosition, 0.5f));
+            yield return StartCoroutine(Movement.MoveToDesiredPosition(card, card.transform.position, newBook.transform.position, 0.5f));
             StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
-            AdjustCardPositionsInHand();
-            card.transform.SetParent(newBook.transform, false);
-            // cardsInHand.Remove(card);
+            card.transform.SetParent(newBook.transform);
+
         }
+        AdjustCardPositionsInHand();
 
         // Save cards list in newBook
         newBook.GetComponent<Book>().book = cardsToMove;
