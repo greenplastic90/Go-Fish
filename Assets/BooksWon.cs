@@ -21,8 +21,10 @@ public class BooksWon : MonoBehaviour
 
     }
     [ContextMenu("Adjust Books")]
-    public void AdjustBookPositionsInBooksWon()
+    public IEnumerator AdjustBookPositionsInBooksWon()
     {
-        Movement.AdjustGameObjectsPositions(booksWon, gameObject, booksOffset, booksAdjustmentSpeed);
+
+        yield return StartCoroutine(Movement.AdjustGameObjectsPositions(booksWon, gameObject, booksOffset, booksAdjustmentSpeed));
+
     }
 }

@@ -6,7 +6,7 @@ public class Movement : MonoBehaviour
 {
 
 
-    public void AdjustGameObjectsPositions(List<GameObject> objectsList, GameObject parentGameObject, float cardsOffset, float speed)
+    public IEnumerator AdjustGameObjectsPositions(List<GameObject> objectsList, GameObject parentGameObject, float cardsOffset, float speed)
     {
 
 
@@ -16,7 +16,7 @@ public class Movement : MonoBehaviour
         List<Vector3> desiredPositions = new List<Vector3>();
         for (int i = 0; i < objectsList.Count; i++)
         {
-            Vector3 newPosition = generateCardPosition(parentGameObject, i, objectsList.Count, cardsOffset);
+            Vector3 newPosition = generateGameObjectPosition(parentGameObject, i, objectsList.Count, cardsOffset);
             desiredPositions.Add(newPosition);
         }
 
@@ -27,15 +27,16 @@ public class Movement : MonoBehaviour
             Vector3 startingPosition = objectsList[i].transform.position; // Starting position of the card
             StartCoroutine(MoveToDesiredPosition(objectsList[i], startingPosition, desiredPositions[i], speed));
         }
+        yield return new WaitForSeconds(0);
     }
 
 
-    private Vector3 generateCardPosition(GameObject parentGameObject, int i, int numberOfCards, float cardsOffset)
+    private Vector3 generateGameObjectPosition(GameObject parentGameObject, int i, int numberOfGameObjects, float gameObjectOffset)
     {
 
         float yPos = parentGameObject.transform.position.y;
-        float xPos = (i - (numberOfCards - 1) / 2f) * cardsOffset + parentGameObject.transform.position.x;
-        float zPos = i - 1;
+        float xPos = (i - (numberOfGameObjects - 1) / 2f) * gameObjectOffset + parentGameObject.transform.position.x;
+        float zPos = 0;
         return new Vector3(xPos, yPos, zPos);
     }
 

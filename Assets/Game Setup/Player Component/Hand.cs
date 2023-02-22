@@ -61,25 +61,15 @@ public class Hand : MonoBehaviour
         //todo ask for card
         bool opposingPlayerHasCard = AskForCardFromAnotherPlayer();
 
-
-
         if (opposingPlayerHasCard)
         {
-
-            Debug.Log("Player " + playerNumber + " Take Another Turn");
             return true;
         }
         else
         {
             DrawCardFromDrawPile();
-            Debug.Log("Player " + playerNumber + " Turn Ends");
             return false;
         }
-
-
-
-        //todo
-
     }
     public void AdjustCardPositionsInHand()
     {
@@ -94,8 +84,8 @@ public class Hand : MonoBehaviour
         }
 
 
-        Movement.AdjustGameObjectsPositions(cardsInHand, PlayerComponent, cardsOffset, adjustCardsPositionSpeed);
-        yield return null;
+        yield return StartCoroutine(Movement.AdjustGameObjectsPositions(cardsInHand, gameObject, cardsOffset, adjustCardsPositionSpeed));
+
     }
 
     [SerializeField]
@@ -180,8 +170,6 @@ public class Hand : MonoBehaviour
 
         if (!foundFourOfAKind)
         {
-
-            // Debug.Log("No Four Of A Kinds Found");
         }
 
     }
@@ -197,36 +185,38 @@ public class Hand : MonoBehaviour
         cardsInHand.RemoveAll(card => cardsToMove.Contains(card));
 
         // Set the initial position and offset for the cards in Books Won
+        BooksWon booksWon = BooksWonGameObject.GetComponent<BooksWon>();
         Vector3 booksWonPosition = BooksWonGameObject.transform.position;
-        // Instanciate a new Book
+
+        // Instantiate a new Book
         GameObject newBook = Instantiate(BookPrefab, booksWonPosition, Quaternion.identity);
         newBook.name = "Book" + value;
-
-
-        // Make it child of Books Won
         newBook.transform.SetParent(BooksWonGameObject.transform);
-
-        // Move each card to the appropriate position in newBook and shrink their size
-        float shrinkScale = 0.5f;
-        foreach (GameObject card in cardsToMove.ToList())
-        {
-            int index = cardsToMove.IndexOf(card);
-            yield return StartCoroutine(Movement.MoveToDesiredPosition(card, card.transform.position, newBook.transform.position, 0.5f));
-            StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
-            card.transform.SetParent(newBook.transform);
-
-        }
-        AdjustCardPositionsInHand();
 
         // Save cards list in newBook
         newBook.GetComponent<Book>().book = cardsToMove;
 
-        // Add new book to booksWon list in in Books Won game object
-        BooksWon booksWon = BooksWonGameObject.GetComponent<BooksWon>();
-        booksWon.booksWon.Add(newBook);
-        booksWon.AdjustBookPositionsInBooksWon();
+        // Set the position of the new book to a fixed value
+        newBook.transform.position = booksWonPosition;
 
+        // Move each card to the appropriate position in newBook and shrink their size
+        float shrinkScale = 0.5f;
+        foreach (GameObject card in cardsToMove)
+        {
+            int index = cardsToMove.IndexOf(card);
+            yield return StartCoroutine(Movement.MoveToDesiredPosition(card, card.transform.position, newBook.transform.position, 0.5f));
+            yield return StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
+            card.transform.SetParent(newBook.transform);
+        }
+
+        // Update the positions of the cards in the hand
+        yield return StartCoroutine(AdjustCardPositionsInHandCoroutine());
+
+        // Update the positions of the books in the Books Won game object
+        booksWon.booksWon.Add(newBook);
+        yield return StartCoroutine(booksWon.AdjustBookPositionsInBooksWon());
     }
+
 
 
 
@@ -256,16 +246,15 @@ public class Hand : MonoBehaviour
 
 
             StartCoroutine(Movement.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, drawCardSpeed));
-            // Debug.Log("MoveToDesiredPosition");
 
             yield return StartCoroutine(RotateGameObject(CardGameObject));
-            // Debug.Log("RotateGameObject");
+
             if (isMainPlayer)
             {
                 CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
             }
 
-            // Debug.Log("AdjustCardPositionsInHandCoroutine");
+
             //todo adjust cards postion in hand
             yield return StartCoroutine(AdjustCardPositionsInHandCoroutine());
             CheckForFourOfAKind();

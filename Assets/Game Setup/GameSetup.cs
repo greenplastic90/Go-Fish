@@ -80,10 +80,6 @@ public class GameSetup : MonoBehaviour
             Vector3 booksWonPosition = playerComponent.transform.Find("Books Won").transform.position;
             playerComponent.transform.Find("Books Won").transform.position = booksWonPosition + new Vector3(0, 3f, 0);
         }
-
-
-        Debug.Log(playerComponent.transform.Find("Hand").GetComponent<Hand>().drawCardSpeed);
-
     }
 
     void InstanciateDrawPile()

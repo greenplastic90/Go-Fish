@@ -6,7 +6,7 @@ public class Book : MonoBehaviour
 {
 
     public List<GameObject> book;
-    public float cardsOffset = 0.1f;
+    public float cardsOffset = 0f;
     // Start is called before the first frame update
     void Start()
     {

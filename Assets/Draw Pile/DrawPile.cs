@@ -109,10 +109,6 @@ public class DrawPile : MonoBehaviour
     void DealCards()
     {
 
-        Debug.Log("drawPile.Count " + drawPile.Count);
-        Debug.Log("numberOfCardsToDealAtGameStart " + numberOfCardsToDealAtGameStart);
-        Debug.Log("playerComponents.Count " + playerComponents.Count);
-
         if (drawPile.Count < numberOfCardsToDealAtGameStart * playerComponents.Count)
         {
             Debug.LogError("Not enough cards in the draw pile to deal.");
