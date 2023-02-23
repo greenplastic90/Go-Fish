@@ -115,8 +115,8 @@ public class Hand : MonoBehaviour
             cardsInHand.AddRange(matchingCards);
 
             // Update the positions of the cards in hands
-            AdjustCardPositionsInHand();
-            opposingPlayerHand.AdjustCardPositionsInHand();
+            StartCoroutine(AdjustCardPositionsInHandCoroutine());
+            StartCoroutine(opposingPlayerHand.AdjustCardPositionsInHandCoroutine());
 
             // Set the parent of the matching cards to this hand
             matchingCards.ForEach(card =>
@@ -291,7 +291,7 @@ public class Hand : MonoBehaviour
             yield return null;
         }
         card.transform.localScale = desiredScale;
-        AdjustCardPositionsInHand();
+        StartCoroutine(AdjustCardPositionsInHandCoroutine());
     }
 
     // Custom comparer to compare the value of cards
