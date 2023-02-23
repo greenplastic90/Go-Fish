@@ -38,12 +38,14 @@ public class Movement : MonoBehaviour
     {
 
         float time = 0f; // Time elapsed since the start of the movement
+        // want to maintin the original z position to avoid the card seeming like its upder the drawpile when it moves.
+        float zPos = startingPosition.z;
 
         // Loop until the movement is complete
         while (time < duration)
         {
             // Calculate the new position of the objectToMove based on the time elapsed and the desired position
-            Vector3 newPosition = Vector3.Lerp(startingPosition, desiredPosition, time / duration);
+            Vector3 newPosition = Vector3.Lerp(startingPosition, desiredPosition + new Vector3(0, 0, zPos), time / duration);
 
             // Set the position of the objectToMove to the new position
             objectToMove.transform.position = newPosition;

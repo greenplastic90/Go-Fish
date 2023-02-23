@@ -85,7 +85,6 @@ MonoBehaviour:
   ThisPlayerDetails: {fileID: 0}
   cardsOffset: 0.5
   isMainPlayer: 0
-  drawCardSpeed: 2
   rotateCardSpeed: 3
   adjustCardsPositionSpeed: 0.5
   opposingPlayerNumber: 2
@@ -191,9 +190,8 @@ MonoBehaviour:
   ThisPlayerDetails: {fileID: 4160096364348376751}
   cardsOffset: 0.5
   isMainPlayer: 0
-  drawCardSpeed: 20
   rotateCardSpeed: 2
-  adjustCardsPositionSpeed: 1
+  adjustCardsPositionSpeed: 0.75
   opposingPlayerNumber: 2
   cardValue: 5
 --- !u!1 &8517988980065891036

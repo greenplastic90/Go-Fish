@@ -16,8 +16,7 @@ public class Hand : MonoBehaviour
     private bool playerDetailsUpdated = false;
     private int playerNumber;
     public bool isMainPlayer;
-    [SerializeField]
-    public float drawCardSpeed;
+
     [SerializeField]
     private float rotateCardSpeed;
     [SerializeField]
@@ -241,16 +240,15 @@ public class Hand : MonoBehaviour
             //todo remove Card from drawPile in DrawPile
             drawPile.Remove(CardGameObject);
 
+
+            //todo adjust cards postion in hand
+            StartCoroutine(AdjustCardPositionsInHandCoroutine());
+
+            yield return StartCoroutine(RotateGameObject(CardGameObject));
             if (isMainPlayer)
             {
                 CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
             }
-            //todo adjust cards postion in hand
-            StartCoroutine(AdjustCardPositionsInHandCoroutine());
-
-            //todo move card
-            float cardZ = CardGameObject.transform.position.z;
-            yield return StartCoroutine(RotateGameObject(CardGameObject));
             //todo change Card parent to this Hand
             CardGameObject.transform.SetParent(gameObject.transform);
 
