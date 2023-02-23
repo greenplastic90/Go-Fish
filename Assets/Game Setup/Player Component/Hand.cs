@@ -114,7 +114,11 @@ public class Hand : MonoBehaviour
         {
             // Remove the matching cards from the opposing player's hand and add them to this hand's cardsInHand
             opposingPlayerHand.cardsInHand.RemoveAll(card => matchingCards.Contains(card));
-            cardsInHand.AddRange(matchingCards);
+            matchingCards.ForEach(card =>
+            {
+                cardsInHand.Add(card);
+                card.transform.SetParent(null);
+            });
 
             // Update the positions of the cards in hands
             StartCoroutine(AdjustCardPositionsInHandCoroutine());
@@ -248,14 +252,16 @@ public class Hand : MonoBehaviour
             cardsInHand.Add(CardGameObject);
             //todo remove Card from drawPile in DrawPile
             drawPile.Remove(CardGameObject);
+            CardGameObject.transform.SetParent(null);
             //todo adjust cards postion in hand
             StartCoroutine(AdjustCardPositionsInHandCoroutine());
 
-            yield return StartCoroutine(RotateGameObject(CardGameObject));
+            StartCoroutine(RotateGameObject(CardGameObject));
             if (isMainPlayer)
             {
                 CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
             }
+            yield return new WaitForSeconds(adjustCardsPositionSpeed);
             //todo change Card parent to this Hand
             CardGameObject.transform.SetParent(gameObject.transform);
 
