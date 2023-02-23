@@ -235,28 +235,24 @@ public class Hand : MonoBehaviour
             //todo locate card thats top of the draw pile (Last Index)
             int lastIndex = drawPile.Count - 1;
             GameObject CardGameObject = drawPile[lastIndex];
-            //todo change Card parent to this Hand
-            CardGameObject.transform.SetParent(gameObject.transform);
             //todo add Card to cardsInHAnd
             cardsInHand.Add(CardGameObject);
             //todo remove Card from drawPile in DrawPile
             drawPile.Remove(CardGameObject);
-            //todo move card
-            float cardZ = CardGameObject.transform.position.z;
-
-
-            StartCoroutine(Movement.MoveToDesiredPosition(CardGameObject, CardGameObject.transform.position + new Vector3(0, 0, cardZ), transform.position, drawCardSpeed));
-
-            yield return StartCoroutine(RotateGameObject(CardGameObject));
 
             if (isMainPlayer)
             {
                 CardGameObject.GetComponent<Card>().ToggleIsFaceUp(true);
             }
-
-
             //todo adjust cards postion in hand
-            yield return StartCoroutine(AdjustCardPositionsInHandCoroutine());
+            StartCoroutine(AdjustCardPositionsInHandCoroutine());
+
+            //todo move card
+            float cardZ = CardGameObject.transform.position.z;
+            yield return StartCoroutine(RotateGameObject(CardGameObject));
+            //todo change Card parent to this Hand
+            CardGameObject.transform.SetParent(gameObject.transform);
+
             CheckForFourOfAKind();
         }
     }

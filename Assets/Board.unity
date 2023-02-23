@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b5716d82c2ca4a31be4737504e4c7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfPlayers: 3
+  numberOfPlayers: 2
   drawPilePrefab: {fileID: 3682224032827324321, guid: 0e58971bc8fe5416b9ec93db063b46e3, type: 3}
   playerComponentPrefab: {fileID: 8517988980065891036, guid: 3a9a6b6f26fa24851850ee888ea406df, type: 3}
   playerComponents: []
