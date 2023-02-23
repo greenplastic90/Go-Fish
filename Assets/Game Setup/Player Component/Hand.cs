@@ -127,7 +127,7 @@ public class Hand : MonoBehaviour
             // Set the parent of the matching cards to this hand
             yield return StartCoroutine(SetParentForEachCoroutine(matchingCards, gameObject.transform));
 
-            CheckForFourOfAKind();
+
         }
     }
 
@@ -194,7 +194,13 @@ public class Hand : MonoBehaviour
     {
         // Find all the cards in the hand that match the specified value
         List<GameObject> cardsToMove = cardsInHand.Where(cardInHand => cardInHand.GetComponent<Card>().value == value).ToList();
-        cardsInHand.RemoveAll(card => cardsToMove.Contains(card));
+
+        cardsToMove.ForEach(card =>
+        {
+            cardsInHand.Remove(card);
+            card.transform.SetParent(null);
+        });
+
 
         // Set the initial position and offset for the cards in Books Won
         BooksWon booksWon = BooksWonGameObject.GetComponent<BooksWon>();
@@ -206,27 +212,34 @@ public class Hand : MonoBehaviour
         newBook.transform.SetParent(BooksWonGameObject.transform);
 
         // Save cards list in newBook
-        newBook.GetComponent<Book>().book = cardsToMove;
+        Book newBookBook = newBook.GetComponent<Book>();
+        newBookBook.book.AddRange(cardsToMove);
 
         // Set the position of the new book to a fixed value
         newBook.transform.position = booksWonPosition;
+        booksWon.booksWon.Add(newBook);
+        // Update the positions of the books in the Books Won game object
+        yield return StartCoroutine(booksWon.AdjustBookPositionsInBooksWon());
+        yield return StartCoroutine(newBookBook.AdjustCardsPositionsInBook());
 
-        // Move each card to the appropriate position in newBook and shrink their size
         float shrinkScale = 0.5f;
         foreach (GameObject card in cardsToMove)
         {
-            int index = cardsToMove.IndexOf(card);
-            yield return StartCoroutine(Movement.MoveToDesiredPosition(card, card.transform.position, newBook.transform.position, 0.5f));
-            yield return StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
+
+            StartCoroutine(ChangeCardScale(card, shrinkScale, 0.5f));
+        };
+
+        foreach (GameObject card in cardsToMove)
+        {
             card.transform.SetParent(newBook.transform);
-        }
+        };
+
+        yield return new WaitForSeconds(newBookBook.cardAdjustmentSpeed);
 
         // Update the positions of the cards in the hand
-        yield return StartCoroutine(AdjustCardPositionsInHandCoroutine());
+        StartCoroutine(AdjustCardPositionsInHandCoroutine());
 
-        // Update the positions of the books in the Books Won game object
-        booksWon.booksWon.Add(newBook);
-        yield return StartCoroutine(booksWon.AdjustBookPositionsInBooksWon());
+
     }
 
 
@@ -265,7 +278,6 @@ public class Hand : MonoBehaviour
             //todo change Card parent to this Hand
             CardGameObject.transform.SetParent(gameObject.transform);
 
-            CheckForFourOfAKind();
         }
     }
 
