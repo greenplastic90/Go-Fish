@@ -54,22 +54,23 @@ public class Hand : MonoBehaviour
 
     }
 
-    [ContextMenu("Take Turn")]
-    public bool TakeTurn()
-    {
-        //todo ask for card
-        bool opposingPlayerHasCard = AskForCardFromAnotherPlayer();
+    // [ContextMenu("Take Turn")]
+    // public bool TakeTurn()
+    // {
+    //     //todo ask for card
+    //! Find a fix so that it returns a bool
+    //     bool opposingPlayerHasCard = StartCoroutine(AskForCardFromAnotherPlayerCoroutine());
 
-        if (opposingPlayerHasCard)
-        {
-            return true;
-        }
-        else
-        {
-            StartCoroutine(DrawCardFromDrawPileCoroutine());
-            return false;
-        }
-    }
+    //     if (opposingPlayerHasCard)
+    //     {
+    //         return true;
+    //     }
+    //     else
+    //     {
+    //         StartCoroutine(DrawCardFromDrawPileCoroutine());
+    //         return false;
+    //     }
+    // }
     public void AdjustCardPositionsInHand()
     {
         StartCoroutine(AdjustCardPositionsInHandCoroutine());
@@ -94,13 +95,15 @@ public class Hand : MonoBehaviour
     private int cardValue = 2;
 
     [ContextMenu("Ask For Card")]
-    bool AskForCardFromAnotherPlayer()
+    public void AskForCardFromAnotherPlayer()
+    {
+        StartCoroutine(AskForCardFromAnotherPlayerCoroutine());
+    }
+    IEnumerator AskForCardFromAnotherPlayerCoroutine()
     {
         // Find the hand of the player you want to access using opposingPlayerNumber
         GameObject opposingPlayerComponent = GameObject.Find("Player " + opposingPlayerNumber);
         Hand opposingPlayerHand = opposingPlayerComponent.GetComponentInChildren<Hand>();
-
-
 
         // Find all the cards in the opposing player's hand that match the specified value
         List<GameObject> matchingCards = opposingPlayerHand.cardsInHand
@@ -118,22 +121,28 @@ public class Hand : MonoBehaviour
             StartCoroutine(opposingPlayerHand.AdjustCardPositionsInHandCoroutine());
 
             // Set the parent of the matching cards to this hand
-            matchingCards.ForEach(card =>
-            {
-                card.transform.SetParent(transform);
-                if (isMainPlayer)
-                {
-                    card.GetComponent<Card>().ToggleIsFaceUp(true);
-                }
-                else
-                {
-                    card.GetComponent<Card>().ToggleIsFaceUp(false);
-                }
-            });
+            yield return StartCoroutine(SetParentForEachCoroutine(matchingCards, gameObject.transform));
+
             CheckForFourOfAKind();
-            return true;
         }
-        return false;
+    }
+
+    IEnumerator SetParentForEachCoroutine(List<GameObject> cards, Transform parent)
+    {
+        yield return new WaitForSeconds(adjustCardsPositionSpeed);
+        foreach (GameObject card in cards)
+        {
+            card.transform.SetParent(parent);
+            if (isMainPlayer)
+            {
+                card.GetComponent<Card>().ToggleIsFaceUp(true);
+            }
+            else
+            {
+                card.GetComponent<Card>().ToggleIsFaceUp(false);
+            }
+
+        }
     }
 
 
@@ -239,8 +248,6 @@ public class Hand : MonoBehaviour
             cardsInHand.Add(CardGameObject);
             //todo remove Card from drawPile in DrawPile
             drawPile.Remove(CardGameObject);
-
-
             //todo adjust cards postion in hand
             StartCoroutine(AdjustCardPositionsInHandCoroutine());
 
