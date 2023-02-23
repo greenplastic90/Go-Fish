@@ -67,7 +67,7 @@ public class Hand : MonoBehaviour
         }
         else
         {
-            DrawCardFromDrawPile();
+            StartCoroutine(DrawCardFromDrawPileCoroutine());
             return false;
         }
     }
@@ -226,7 +226,8 @@ public class Hand : MonoBehaviour
 
         StartCoroutine(DrawCardFromDrawPileCoroutine());
     }
-    private IEnumerator DrawCardFromDrawPileCoroutine()
+
+    public IEnumerator DrawCardFromDrawPileCoroutine()
     {
         //todo Check that draw pile isn't empty
         List<GameObject> drawPile = DrawPile.GetComponent<DrawPile>().drawPile;

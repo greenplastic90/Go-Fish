@@ -127,7 +127,7 @@ public class DrawPile : MonoBehaviour
             {
                 if (drawPile.Count > 0)
                 {
-                    PlayerComponentGameObject.transform.Find("Hand").GetComponent<Hand>().DrawCardFromDrawPile();
+                    StartCoroutine(PlayerComponentGameObject.transform.Find("Hand").GetComponent<Hand>().DrawCardFromDrawPileCoroutine());
                 }
             }
 
